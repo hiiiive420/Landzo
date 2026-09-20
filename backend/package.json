@@ -1,0 +1,42 @@
+{
+  "name": "landzo-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "LANDZO JavaScript Express backend foundation.",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "lint": "eslint src tests eslint.config.js prettier.config.js vitest.config.js",
+    "format": "prettier --write \"src/**/*.js\" \"tests/**/*.js\" \"*.js\" package.json",
+    "format:check": "prettier --check \"src/**/*.js\" \"tests/**/*.js\" \"*.js\" package.json",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.10.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.6.2",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.9.3",
+    "multer": "^2.2.0",
+    "sanitize-html": "^2.17.7",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.9.1",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.11.0",
+    "prettier": "^3.9.6",
+    "supertest": "^7.2.2",
+    "vitest": "^4.1.11"
+  }
+}

@@ -1,0 +1,62 @@
+﻿export const ANALYTICS_EVENT_TYPES = Object.freeze({
+  PROPERTY_VIEW: "property_view",
+  PROPERTY_SAVE: "property_save",
+  PROPERTY_UNSAVE: "property_unsave",
+  ENQUIRY_SUBMITTED: "enquiry_submitted",
+  MAP_INTERACTION: "map_interaction",
+  WHATSAPP_CLICK: "whatsapp_click",
+});
+
+export const ANALYTICS_EVENT_TYPE_VALUES = Object.freeze(
+  Object.values(ANALYTICS_EVENT_TYPES),
+);
+
+export const PUBLIC_ANALYTICS_EVENT_TYPES = Object.freeze([
+  ANALYTICS_EVENT_TYPES.PROPERTY_VIEW,
+  ANALYTICS_EVENT_TYPES.PROPERTY_SAVE,
+  ANALYTICS_EVENT_TYPES.PROPERTY_UNSAVE,
+  ANALYTICS_EVENT_TYPES.MAP_INTERACTION,
+  ANALYTICS_EVENT_TYPES.WHATSAPP_CLICK,
+]);
+
+export const SERVER_ANALYTICS_EVENT_TYPES = Object.freeze([
+  ANALYTICS_EVENT_TYPES.ENQUIRY_SUBMITTED,
+]);
+
+export const PROPERTY_REQUIRED_EVENT_TYPES = Object.freeze([
+  ANALYTICS_EVENT_TYPES.PROPERTY_VIEW,
+  ANALYTICS_EVENT_TYPES.PROPERTY_SAVE,
+  ANALYTICS_EVENT_TYPES.PROPERTY_UNSAVE,
+]);
+
+export const PROPERTY_OPTIONAL_EVENT_TYPES = Object.freeze([
+  ANALYTICS_EVENT_TYPES.MAP_INTERACTION,
+  ANALYTICS_EVENT_TYPES.WHATSAPP_CLICK,
+  ANALYTICS_EVENT_TYPES.ENQUIRY_SUBMITTED,
+]);
+
+export const ANALYTICS_CONTEXT_SURFACES = Object.freeze({
+  HOMEPAGE: "homepage",
+  PROPERTY_LISTING: "property_listing",
+  PROPERTY_DETAIL: "property_detail",
+  EXPLORE_MAP: "explore_map",
+  SAVED_PROPERTIES: "saved_properties",
+  ENQUIRY: "enquiry",
+});
+
+export const ANALYTICS_CONTEXT_SURFACE_VALUES = Object.freeze(
+  Object.values(ANALYTICS_CONTEXT_SURFACES),
+);
+
+export const ANALYTICS_RANGES = Object.freeze({
+  SEVEN_DAYS: "7d",
+  THIRTY_DAYS: "30d",
+  ALL: "all",
+});
+
+export const ANALYTICS_RANGE_VALUES = Object.freeze(
+  Object.values(ANALYTICS_RANGES),
+);
+
+export const ANALYTICS_DEFAULT_RANGE = ANALYTICS_RANGES.THIRTY_DAYS;
+export const ANALYTICS_TOP_PROPERTY_LIMIT = 5;
