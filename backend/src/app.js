@@ -44,7 +44,7 @@ import { healthRouter } from "./routes/health.routes.js";
 
 const defaultEnv = {
   NODE_ENV: process.env.NODE_ENV || "development",
-  CORS_ORIGINS: ["http://localhost:5173" || "https://landzo.hiiiive.lk"],
+  CORS_ORIGINS: ["https://landzo.hiiiive.lk"],
 };
 
 const createCorsOptions = (allowedOrigins) => ({
