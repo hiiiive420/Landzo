@@ -1,0 +1,19 @@
+FROM node:24-bookworm-slim
+
+WORKDIR /app
+
+RUN npm install -g pnpm@11.23.0
+
+COPY pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY backend/package.json ./backend/package.json
+COPY frontend/package.json ./frontend/package.json
+
+RUN pnpm install --frozen-lockfile --prod --filter landzo-backend
+
+COPY backend ./backend
+
+WORKDIR /app/backend
+
+ENV NODE_ENV=production
+
+CMD ["node", "src/server.js"]
