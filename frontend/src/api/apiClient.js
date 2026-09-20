@@ -3,7 +3,7 @@ import axios from "axios";
 import { getAuthBridge } from "./authBridge";
 
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1",
+  baseURL: import.meta.env.VITE_API_BASE_URL || "https://cwgs8408wg0sgww804s0kkg0.72.62.79.253.sslip.io/api/v1"|| "http://localhost:5000/api/v1",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
