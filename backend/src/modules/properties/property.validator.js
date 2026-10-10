@@ -365,6 +365,13 @@ export const listPublicPropertiesSchema = z.object({
   query: publicPropertyListQuerySchema,
 });
 
+export const publicPropertyLocationSuggestionsSchema = z.object({
+  query: z.object({
+    search: z.string().trim().min(1).max(120),
+    limit: z.coerce.number().int().min(1).max(8).default(8),
+  }).strict(),
+});
+
 export const listPublicExploreMapPropertiesSchema = z.object({
   query: z.object({}).strict().default({}),
 });
@@ -397,4 +404,3 @@ export const reorderPropertyImagesSchema = z.object({
     })
     .strict(),
 });
-

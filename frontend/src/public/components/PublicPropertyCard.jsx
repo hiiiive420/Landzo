@@ -906,6 +906,161 @@ const StandardPropertyCard = ({
   );
 };
 
+
+const FeaturedHomePropertyCard = ({
+  property,
+  coverImage,
+  detailPath,
+  locationLabel,
+  priceLabel,
+  detailItems,
+}) => {
+  const transactionType =
+    getPrimaryTransaction(
+      property,
+    );
+
+  const transactionLabel =
+    getTransactionLabel(
+      transactionType,
+    );
+
+  const priceHeading =
+    transactionType === "rent"
+      ? "Rent price"
+      : transactionType === "lease"
+        ? "Lease price"
+        : "Price";
+
+  const enquiryPath =
+    property.code
+      ? `/contact?property=${encodeURIComponent(property.code)}`
+      : "/contact";
+
+  return (
+    <>
+      <Link
+        className="public-property-card-link landzo-home-featured-image-link"
+        to={detailPath}
+      >
+        <div className="public-property-card-media">
+          {coverImage?.url ? (
+            <img
+              alt={property.title || "LANDZO property"}
+              loading="lazy"
+              src={coverImage.url}
+            />
+          ) : (
+            <div
+              aria-hidden="true"
+              className="public-property-card-fallback"
+            />
+          )}
+
+          {transactionLabel ? (
+            <span
+              className={[
+                "public-property-card-transaction",
+                transactionType ? `is-${transactionType}` : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
+              For {transactionLabel}
+            </span>
+          ) : null}
+        </div>
+      </Link>
+
+      <SavePropertyButton
+        className="public-property-card-save"
+        propertyCode={property.code}
+        propertyId={property.id}
+        propertyTitle={property.title}
+        surface={analyticsSurfaces.propertyListing}
+      />
+
+      <div className="landzo-home-featured-content">
+        <div className="public-property-card-body landzo-home-featured-body">
+          <div className="landzo-home-featured-meta">
+            {property.code ? (
+              <span className="public-property-card-code">
+                {property.code}
+              </span>
+            ) : null}
+
+            {property.type ? (
+              <span className="landzo-home-featured-type">
+                {typeLabels[property.type] || property.type}
+              </span>
+            ) : null}
+          </div>
+
+          <div className="public-property-card-heading landzo-home-featured-heading">
+            <h3>
+              <Link
+                className="landzo-home-featured-title"
+                to={detailPath}
+              >
+                {property.title}
+              </Link>
+            </h3>
+
+            {property.code ? (
+              <span className="public-property-card-code">
+                {property.code}
+              </span>
+            ) : null}
+          </div>
+
+          {locationLabel ? (
+            <p className="public-property-card-location">
+              {locationLabel}
+            </p>
+          ) : null}
+
+          {detailItems.length > 0 ? (
+            <div className="public-property-card-details">
+              {detailItems.slice(0, 5).map((item, index) => (
+                <span key={`${item}-${index}`}>
+                  {item}
+                </span>
+              ))}
+            </div>
+          ) : null}
+        </div>
+
+        <div className="public-property-card-bottom landzo-home-featured-footer">
+          <div className="landzo-home-featured-price">
+            <span className="landzo-home-featured-price-label">
+              {priceHeading}
+            </span>
+            {priceLabel ? <strong>{priceLabel}</strong> : null}
+          </div>
+
+          <div className="public-property-card-tags">
+            {property.type ? (
+              <span>
+                {typeLabels[property.type] || property.type}
+              </span>
+            ) : null}
+            {transactionLabel ? (
+              <span>For {transactionLabel}</span>
+            ) : null}
+          </div>
+
+          <Link
+            className="landzo-home-featured-enquire"
+            to={enquiryPath}
+          >
+            Enquire Now
+          </Link>
+        </div>
+      </div>
+    </>
+  );
+};
+
 /* =========================================================
    SAVED PROPERTY CARD
    ========================================================= */
@@ -1216,6 +1371,9 @@ export const PublicPropertyCard = ({
   const isSavedVariant =
     variant === "saved";
 
+  const isFeaturedVariant =
+    variant === "featured";
+
 
   return (
     <article
@@ -1224,6 +1382,9 @@ export const PublicPropertyCard = ({
 
         isSavedVariant
           ? "landzo-saved-property-card"
+          : "",
+        isFeaturedVariant
+          ? "landzo-home-featured-card"
           : "",
       ]
         .filter(Boolean)
@@ -1253,6 +1414,15 @@ export const PublicPropertyCard = ({
           }
         />
 
+      ) : isFeaturedVariant ? (
+        <FeaturedHomePropertyCard
+          coverImage={coverImage}
+          detailPath={detailPath}
+          detailItems={detailItems}
+          locationLabel={locationLabel}
+          priceLabel={priceLabel}
+          property={property}
+        />
       ) : (
 
         <StandardPropertyCard

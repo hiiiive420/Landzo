@@ -97,6 +97,7 @@ const locationSchema = new mongoose.Schema(
 );
 
 locationSchema.index({ level: 1, parent: 1, canonicalKey: 1 }, { unique: true });
+locationSchema.index({ status: 1, canonicalKey: 1 });
 locationSchema.index({ level: 1, parent: 1, status: 1, sortOrder: 1, name: 1 });
 locationSchema.index({ status: 1 });
 locationSchema.index({ sortOrder: 1, name: 1 });
@@ -114,6 +115,5 @@ locationSchema.pre("validate", function setGeneratedFields() {
 });
 
 export const Location = mongoose.models.Location || mongoose.model("Location", locationSchema);
-
 
 

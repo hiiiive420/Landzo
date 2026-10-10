@@ -6,6 +6,7 @@ import {
   getPublicProperty,
   listAdminProperties,
   listPublicExploreMapProperties,
+  listPublicPropertyLocationSuggestions,
   listPublicProperties,
   listTrashedAdminProperties,
   publishProperty,
@@ -65,6 +66,20 @@ export const listPublicPropertiesHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+export const listPublicPropertyLocationSuggestionsHandler = async (req, res, next) => {
+  try {
+    res.status(200).json(
+      successResponse({
+        message: "Public property location suggestions retrieved",
+        data: await listPublicPropertyLocationSuggestions(req.validated.query),
+      }),
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const listPublicExploreMapPropertiesHandler = async (req, res, next) => {
   try {
     res.status(200).json(
@@ -283,4 +298,3 @@ export const updatePropertyStatusHandler = async (req, res, next) => {
     next(error);
   }
 };
-

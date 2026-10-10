@@ -8,6 +8,18 @@ export const listPublicProperties = async (params = {}) => {
   return data;
 };
 
+export const listPublicPropertyLocationSuggestions = async (
+  params,
+  config = {},
+) => {
+  const { data } = await publicApiClient.get(
+    "/properties/location-suggestions",
+    { ...config, params },
+  );
+
+  return data;
+};
+
 export const getPublicProperty = async (propertyCode) => {
   const { data } = await publicApiClient.get(
     `/properties/${propertyCode}`,

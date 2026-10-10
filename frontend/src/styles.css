@@ -812,7 +812,6 @@ tbody tr:last-child td {
    LANDZO EXPLORE MAP - DESKTOP
    Tablet and mobile layouts remain scoped to their own breakpoints.
    ========================================================= */
-
 @media (min-width: 1025px) {
   .landzo-explore-page {
     width: 100%;
@@ -5254,6 +5253,51 @@ textarea:disabled {
   background: rgba(255, 255, 255, 0.78);
 }
 
+.landzo-home-location-field {
+  position: relative;
+}
+
+.landzo-location-suggestions {
+  position: fixed;
+  z-index: 5200;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid rgba(23, 49, 38, 0.16);
+  border-radius: 13px;
+  background: #faf8f4;
+  box-shadow: 0 12px 28px rgba(23, 49, 38, 0.12);
+  box-sizing: border-box;
+  color: #173126;
+  font-family: "Manrope", sans-serif;
+  font-size: 0.875rem;
+}
+
+.landzo-location-suggestion {
+  display: block;
+  width: 100%;
+  min-height: 42px;
+  padding: 0 14px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.landzo-location-suggestion:hover,
+.landzo-location-suggestion:focus-visible,
+.landzo-location-suggestion[aria-selected="true"] {
+  background: #e6ece3;
+  outline: 0;
+}
+
+.landzo-location-suggestions-message {
+  padding: 12px 14px;
+  color: #59675f;
+  font-size: 0.8125rem;
+}
+
 .landzo-home-search-fields label:focus-within {
   border-color: #8fa69a;
   box-shadow: 0 0 0 3px rgba(39, 80, 61, 0.07);
@@ -5576,7 +5620,7 @@ textarea:disabled {
 
   padding: 4px;
 
-  overflow: hidden;
+  overflow: visible;
 
   border:
     1px solid
@@ -10072,6 +10116,10 @@ textarea:disabled {
    Figma base width: 1250px
    ========================================================= */
 
+.landzo-home-featured-content {
+  display: contents;
+}
+
 @media (max-width: 640px) {
 
   /* -------------------------------------------------------
@@ -10558,6 +10606,18 @@ textarea:disabled {
     background: transparent;
 
     color: #b84d2c;
+  }
+
+  .landzo-featured-eyebrow,
+  .landzo-home-featured-meta,
+  .landzo-home-featured-price-label,
+  .landzo-home-featured-enquire {
+    display: none;
+  }
+
+  .landzo-home-featured-title {
+    color: inherit;
+    text-decoration: none;
   }
 
 
@@ -11070,6 +11130,105 @@ textarea:disabled {
       rgba(121, 109, 91, 0.65);
 
     transform: none !important;
+  }
+
+  .public-featured-section
+  .landzo-home-featured-card {
+    display: grid;
+    grid-template-columns: 53% 47%;
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .public-featured-section
+  .landzo-home-featured-card
+  .landzo-home-featured-image-link {
+    display: block !important;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+  }
+
+  .public-featured-section
+  .landzo-home-featured-content {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .public-featured-section
+  .landzo-home-featured-card .public-property-card-media {
+    width: 100%;
+    height: 100%;
+  }
+
+  .public-featured-section
+  .landzo-home-featured-body {
+    width: 100%;
+    height: auto;
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    justify-content: flex-start;
+  }
+
+  .public-featured-section
+  .landzo-home-featured-footer {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    min-width: 0;
+    width: 100%;
+    margin-top: auto;
+    padding: 6px 0 0;
+    border-top: 0;
+  }
+
+  .public-featured-section
+  .landzo-home-featured-price {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin: 0 0 3px;
+    line-height: 1.15;
+  }
+
+  .public-featured-section
+  .landzo-home-featured-price strong {
+    color: #173126;
+    font-size: 11.5px;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .public-featured-section
+  .landzo-home-featured-footer .public-property-card-tags {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .public-featured-section
+  .landzo-home-featured-footer .public-property-card-tags span {
+    font-size: 8.5px;
+    line-height: 1.2;
+  }
+
+  .public-featured-section
+  .landzo-home-featured-footer .landzo-home-featured-enquire {
+    display: none !important;
   }
 
   .public-featured-section
@@ -40414,6 +40573,524 @@ body:has(.landzo-public-blog-page) .public-main {
         padding-bottom: 253px;
     }
 }
+
+/* =========================================================
+   LANDZO ABOUT PAGE
+   ========================================================= */
+.landzo-about-page {
+  overflow: hidden;
+}
+
+.landzo-about-page .landzo-static-shell {
+  width: min(90vw, 1500px);
+}
+
+.landzo-about-page .landzo-static-eyebrow {
+  margin-bottom: 16px;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.landzo-about-page .landzo-about-hero {
+  padding: 88px 0 96px;
+  background: #173126;
+  color: #f8f5ef;
+}
+
+.landzo-about-hero-grid {
+  grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.95fr);
+  gap: clamp(50px, 6vw, 90px);
+}
+
+.landzo-about-hero-copy {
+  min-width: 0;
+  animation: landzo-about-rise 650ms ease both;
+}
+
+.landzo-about-page .landzo-about-hero h1 {
+  max-width: 780px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(4rem, 5.2vw, 6rem);
+  font-weight: 600;
+  line-height: 0.96;
+  text-wrap: balance;
+}
+
+.landzo-about-page .landzo-about-hero-copy > p:last-child {
+  max-width: 650px;
+  margin-top: 30px;
+  color: rgba(248, 244, 239, 0.8);
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
+  line-height: 1.6;
+}
+
+.landzo-about-hero-image {
+  position: relative;
+  min-width: 0;
+  aspect-ratio: 4 / 3;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(223, 189, 104, 0.32);
+  border-radius: 28px;
+  background: #10291f;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.22);
+  animation: landzo-about-image-in 750ms 100ms ease both;
+}
+
+.landzo-about-hero-image::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 56%, rgba(9, 28, 20, 0.52));
+  content: "";
+  pointer-events: none;
+}
+
+.landzo-about-hero-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.landzo-about-hero-image figcaption {
+  position: absolute;
+  z-index: 1;
+  bottom: 20px;
+  left: 20px;
+  padding: 9px 13px;
+  border: 1px solid rgba(223, 189, 104, 0.42);
+  border-radius: 999px;
+  background: rgba(23, 49, 38, 0.76);
+  color: #f8f5ef;
+  font-family: "Manrope", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(8px);
+}
+
+.landzo-about-purpose {
+  padding: 100px 0;
+  background: #f3ebe4;
+}
+
+.landzo-about-purpose-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  align-items: start;
+  gap: clamp(48px, 8vw, 120px);
+}
+
+.landzo-about-page .landzo-about-purpose h2,
+.landzo-about-page .landzo-about-capabilities h2,
+.landzo-about-page .landzo-about-statement h2,
+.landzo-about-page .landzo-about-cta h2 {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2.8rem, 4.2vw, 4.5rem);
+  font-weight: 600;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.landzo-about-purpose-copy p {
+  max-width: 700px;
+  margin: 0;
+  color: #405248;
+  font-family: "Manrope", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.landzo-about-purpose-copy p + p {
+  margin-top: 18px;
+}
+
+.landzo-about-capabilities {
+  padding: 98px 0 106px;
+  background: #eee8df;
+}
+
+.landzo-about-page .landzo-about-capabilities h2 {
+  max-width: 680px;
+}
+
+.landzo-about-page .landzo-about-card-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 42px;
+}
+
+.landzo-about-page .landzo-about-card {
+  min-height: 220px;
+  padding: 26px;
+  border: 1px solid rgba(23, 49, 38, 0.09);
+  border-radius: 22px;
+  background: #fffdf9;
+  box-shadow: 0 10px 26px rgba(23, 49, 38, 0.045);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  animation: landzo-about-rise 600ms ease both;
+}
+
+.landzo-about-card:nth-child(2) { animation-delay: 70ms; }
+.landzo-about-card:nth-child(3) { animation-delay: 140ms; }
+.landzo-about-card:nth-child(4) { animation-delay: 210ms; }
+
+.landzo-about-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(23, 49, 38, 0.08);
+}
+
+.landzo-about-card-icon {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  margin-bottom: 25px;
+  border: 1px solid rgba(223, 189, 104, 0.45);
+  border-radius: 14px;
+  background: #f8f3e9;
+  color: #173126;
+}
+
+.landzo-about-card-icon svg {
+  width: 23px;
+  height: 23px;
+}
+
+.landzo-about-page .landzo-about-card h3 {
+  font-family: "Manrope", sans-serif;
+  font-size: 0.98rem;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.landzo-about-page .landzo-about-card p {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.landzo-about-statement {
+  padding: 92px 0;
+  background: #173126;
+  color: #f8f5ef;
+}
+
+.landzo-about-statement-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+  align-items: center;
+  gap: clamp(48px, 8vw, 120px);
+}
+
+.landzo-about-statement-brand {
+  margin: 0 0 17px;
+  color: #dfbd68;
+  font-family: "Manrope", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.landzo-about-page .landzo-about-statement h2 {
+  color: #f8f5ef;
+  font-size: clamp(3.5rem, 5.5vw, 5.5rem);
+}
+
+.landzo-about-statement-copy {
+  display: grid;
+  grid-template-columns: 2px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 25px;
+}
+
+.landzo-about-statement-copy span {
+  display: block;
+  background: #dfbd68;
+}
+
+.landzo-about-statement-copy p {
+  max-width: 560px;
+  margin: 0;
+  color: rgba(248, 245, 239, 0.78);
+  font-family: "Manrope", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.landzo-about-cta {
+  padding: 92px 0 104px;
+  background: #f3ebe4;
+}
+
+.landzo-about-page .landzo-static-cta {
+  align-items: center;
+}
+
+.landzo-about-page .landzo-about-cta h2 {
+  color: #173126;
+}
+
+.landzo-about-cta-copy {
+  margin: 16px 0 0;
+  color: #526359;
+  font-family: "Manrope", sans-serif;
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+.landzo-about-page .landzo-static-button-primary {
+  border-color: #b74d27;
+  background: #b74d27;
+  color: #fff;
+}
+
+.landzo-about-page .landzo-static-button-secondary {
+  border-color: rgba(23, 49, 38, 0.35);
+  color: #173126;
+}
+
+.landzo-about-page .landzo-static-button:hover {
+  filter: brightness(1.08);
+}
+
+@keyframes landzo-about-rise {
+  from { opacity: 0.75; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes landzo-about-image-in {
+  from { opacity: 0.85; transform: scale(0.985); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .landzo-about-page .landzo-static-shell {
+    width: min(calc(100% - 64px), 900px);
+  }
+
+  .landzo-about-page .landzo-about-hero {
+    padding: 76px 0 80px;
+  }
+
+  .landzo-about-hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
+    gap: clamp(28px, 5vw, 54px);
+  }
+
+  .landzo-about-page .landzo-about-hero h1 {
+    font-size: clamp(3rem, 5.3vw, 4.3rem);
+  }
+
+  .landzo-about-page .landzo-about-hero-copy > p:last-child {
+    margin-top: 22px;
+    font-size: 1rem;
+  }
+
+  .landzo-about-purpose,
+  .landzo-about-capabilities,
+  .landzo-about-statement,
+  .landzo-about-cta {
+    padding-block: 76px;
+  }
+
+  .landzo-about-page .landzo-about-purpose h2,
+  .landzo-about-page .landzo-about-capabilities h2,
+  .landzo-about-page .landzo-about-cta h2 {
+    font-size: clamp(2.7rem, 5vw, 3.7rem);
+  }
+
+  .landzo-about-page .landzo-about-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 32px;
+  }
+
+  .landzo-about-page .landzo-about-card {
+    min-height: 190px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 820px) {
+  .landzo-about-page .landzo-static-shell {
+    width: min(calc(100% - 48px), 700px);
+  }
+
+  .landzo-about-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+
+  .landzo-about-hero-image {
+    width: min(100%, 600px);
+  }
+
+  .landzo-about-purpose-grid,
+  .landzo-about-statement-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
+@media (max-width: 640px) {
+  .landzo-about-page .landzo-static-shell {
+    width: min(calc(100% - 36px), 480px);
+  }
+
+  .landzo-about-page .landzo-about-hero {
+    padding: 87px 0 54px;
+  }
+
+  .landzo-about-hero-grid {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 30px;
+  }
+
+  .landzo-about-page .landzo-about-hero h1 {
+    font-size: clamp(2.75rem, 11vw, 3.45rem);
+    line-height: 0.98;
+  }
+
+  .landzo-about-page .landzo-about-hero-copy > p:last-child {
+    margin-top: 20px;
+    font-size: 0.97rem;
+  }
+
+  .landzo-about-hero-image {
+    aspect-ratio: 4 / 3;
+    border-radius: 20px;
+  }
+
+  .landzo-about-hero-image figcaption {
+    bottom: 13px;
+    left: 13px;
+    padding: 8px 11px;
+    font-size: 0.68rem;
+  }
+
+  .landzo-about-purpose,
+  .landzo-about-capabilities,
+  .landzo-about-statement,
+  .landzo-about-cta {
+    padding-block: 58px;
+  }
+
+  .landzo-about-purpose-grid,
+  .landzo-about-statement-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .landzo-about-page .landzo-about-purpose h2,
+  .landzo-about-page .landzo-about-capabilities h2,
+  .landzo-about-page .landzo-about-cta h2 {
+    font-size: clamp(2.55rem, 10vw, 3.2rem);
+  }
+
+  .landzo-about-purpose-copy p,
+  .landzo-about-statement-copy p {
+    font-size: 0.96rem;
+  }
+
+  .landzo-about-page .landzo-about-card-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 26px;
+  }
+
+  .landzo-about-page .landzo-about-card {
+    min-height: 0;
+    padding: 22px;
+  }
+
+  .landzo-about-card-icon {
+    margin-bottom: 18px;
+  }
+
+  .landzo-about-statement-copy {
+    gap: 18px;
+  }
+
+  .landzo-about-page .landzo-about-statement h2 {
+    font-size: clamp(3.2rem, 13vw, 4.2rem);
+  }
+
+  .landzo-about-page .landzo-static-cta {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+  }
+
+  .landzo-about-page .landzo-static-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    max-width: 210px;
+    margin-top: 24px;
+  }
+
+  .landzo-about-page .landzo-static-button {
+    display: flex;
+    width: 100%;
+    max-width: 210px;
+    height: 50px;
+    min-height: 50px;
+    box-sizing: border-box;
+    padding: 0 20px;
+    border-radius: 14px;
+    font-family: "Manrope", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    justify-content: space-between;
+    transition: transform 140ms ease, background-color 140ms ease;
+  }
+
+  .landzo-about-page .landzo-static-button-primary {
+    border-color: #b74d27;
+    background: #b74d27;
+    color: #fff;
+    box-shadow: 0 8px 18px rgba(199, 90, 54, 0.18);
+  }
+
+  .landzo-about-page .landzo-static-button-primary::after {
+    content: "→";
+    font-size: 16px;
+  }
+
+  .landzo-about-page .landzo-static-button-secondary {
+    border: 1px solid rgba(23, 49, 38, 0.24);
+    background: transparent;
+    color: #173126;
+  }
+
+  .landzo-about-page .landzo-static-button-secondary::after {
+    content: "↗";
+    font-size: 15px;
+  }
+
+  .landzo-about-page .landzo-static-button:active {
+    transform: scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landzo-about-hero-copy,
+  .landzo-about-hero-image,
+  .landzo-about-card {
+    animation: none;
+  }
+
+  .landzo-about-card {
+    transition: none;
+  }
+}
+
 /* =========================================================
    PUBLIC SHELL, NAVBAR, AND FOOTER FOUNDATION
    ========================================================= */
@@ -44570,6 +45247,7 @@ body:has(.landzo-public-blog-page) .public-main {
 
     .landzo-home-hero-inner {
       display: grid;
+      height: auto;
       grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
       grid-template-rows: minmax(0, 1fr) auto;
       align-items: center;
@@ -45358,6 +46036,14 @@ body:has(.landzo-public-blog-page) .public-main {
 
     .public-featured-grid {
       gap: 22px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .public-featured-section .landzo-featured-eyebrow,
+    .public-featured-section .landzo-home-featured-meta,
+    .public-featured-section .landzo-home-featured-price-label,
+    .public-featured-section .landzo-home-featured-enquire {
+      display: none !important;
     }
 
     .public-property-card {
@@ -46333,6 +47019,7 @@ body:has(.landzo-public-blog-page) .public-main {
   }
 
   .landzo-home-hero-inner {
+    height: auto;
     display: grid;
     grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.55fr);
     grid-template-rows: minmax(0, 1fr) auto;
@@ -47151,31 +47838,6 @@ body:has(.landzo-public-blog-page) .public-main {
   }
 }
 
-/* =========================================================
-   LANDZO HOME - DESKTOP HERO SPACING REFINEMENT
-   ========================================================= */
-
-@media (min-width: 1025px) {
-  .landzo-home-hero,
-  .landzo-home-hero-inner {
-    min-height: 820px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .landzo-home-hero,
-  .landzo-home-hero-inner {
-    min-height: 860px;
-  }
-}
-
-@media (min-width: 1600px) {
-  .landzo-home-hero,
-  .landzo-home-hero-inner {
-    min-height: 880px;
-  }
-}
-
 @media (min-width: 1025px) {
   .landzo-home-search-fields > label:first-child {
     grid-column: 1;
@@ -47427,6 +48089,14 @@ body:has(.landzo-public-blog-page) .public-main {
    LANDZO HOME - DESKTOP FEATURED PROPERTIES POLISH
    ========================================================= */
 
+.landzo-featured-carousel-shell {
+  display: contents;
+}
+
+.landzo-featured-carousel-button {
+  display: none;
+}
+
 @media (min-width: 1025px) {
   .landzo-home-hero + .public-featured-section {
     padding-block: 72px 76px;
@@ -47463,6 +48133,49 @@ body:has(.landzo-public-blog-page) .public-main {
     gap: 6px;
     font-size: 0.875rem;
     white-space: nowrap;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-carousel-button {
+    display: flex;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid rgba(23, 49, 38, 0.16);
+    border-radius: 50%;
+    background: #f8f4ef;
+    color: #173126;
+    box-shadow: 0 6px 18px rgba(23, 49, 38, 0.08);
+    cursor: pointer;
+    transition: background-color 200ms ease, color 200ms ease, transform 200ms ease, opacity 200ms ease;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-carousel-button svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-carousel-prev svg {
+    transform: rotate(180deg);
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-carousel-button:not(:disabled):hover {
+    transform: translateY(-1px);
+    background: #173126;
+    color: #fff;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-carousel-button:focus-visible {
+    outline: 3px solid rgba(199, 90, 54, 0.35);
+    outline-offset: 3px;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-carousel-button:disabled {
+    transform: none;
+    opacity: 0.3;
+    cursor: not-allowed;
   }
 
   .landzo-home-hero + .public-featured-section .landzo-featured-view-all-icon,
@@ -47632,127 +48345,265 @@ body:has(.landzo-public-blog-page) .public-main {
    LANDZO HOME - DESKTOP EXPLORE ON MAP
    ========================================================= */
 
+.landzo-home-location-heading-row,
+.landzo-home-location-map-stage {
+  display: none;
+}
+
 @media (min-width: 1025px) {
   .landzo-home-location-section {
-    padding: 0;
-    background: #f3ebe4;
+    width: 100%;
+    padding: 70px 0 76px;
+    background: #173126;
+    color: #f8f4ef;
   }
 
-  .landzo-home-location-inner {
-    position: relative;
+  .landzo-home-location-shell {
     display: grid;
-    grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
-    width: min(92vw, 1450px);
-    height: clamp(260px, 24vw, 280px);
-    min-height: 0;
+    grid-template-columns: minmax(280px, 0.34fr) minmax(0, 0.66fr);
+    column-gap: clamp(48px, 5vw, 84px);
+    align-items: start;
+    width: min(90vw, 1450px);
     margin-inline: auto;
-    overflow: hidden;
-    border: 1px solid rgba(129, 114, 79, 0.24);
-    border-radius: 22px;
-    background: #f8f3eb;
-    box-shadow: 0 16px 34px rgba(48, 59, 45, 0.1);
   }
 
-  .landzo-home-location-copy {
-    z-index: 3;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 36px;
+  .landzo-home-location-heading-row {
+    display: block;
+    max-width: 390px;
+    padding-top: 55px;
   }
 
-  .landzo-home-location-copy h2 {
+  .landzo-home-location-heading-copy {
+    min-width: 0;
+    max-width: 390px;
+  }
+
+  .landzo-home-location-eyebrow {
+    display: block;
+    margin-bottom: 22px;
+    color: #c75a36;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .landzo-home-location-heading-copy h2 {
+    max-width: 440px;
     margin: 0;
-    color: #173126;
+    color: #f8f4ef;
     font-family: "Cormorant Garamond", Georgia, serif;
-    font-size: clamp(2rem, 2.6vw, 2.7rem);
-    line-height: 1.08;
+    font-size: clamp(3.4rem, 4.1vw, 4.6rem);
+    font-weight: 600;
+    line-height: 0.95;
   }
 
-  .landzo-home-location-copy p {
-    max-width: 340px;
-    margin: 16px 0 0;
-    color: #33483d;
-    font-size: 0.9375rem;
+  .landzo-home-location-heading-copy p {
+    max-width: 360px;
+    margin: 26px 0 0;
+    color: rgba(248, 244, 239, 0.72);
+    font-size: 1.03125rem;
     line-height: 1.55;
   }
 
-  .landzo-home-location-button {
-    min-height: 46px;
-    margin-top: 24px;
-    padding-inline: 20px;
-    border-radius: 11px;
-    background: #173126;
-    color: #f3ebe4;
-    font-size: 0.8125rem;
-  }
-
-  .landzo-home-location-art {
+  .landzo-home-location-map-stage {
     position: relative;
-    z-index: 1;
-    min-height: 0;
+    display: block;
+    width: 100%;
+    height: clamp(500px, 42vw, 590px);
+    margin-top: 0;
     overflow: hidden;
-    background: #d7e2d5;
-    perspective: none;
-    isolation: isolate;
+    border: 1px solid rgba(223, 189, 104, 0.22);
+    border-radius: 28px;
+    background: #dce8df;
+    box-shadow: 0 24px 55px rgba(0, 0, 0, 0.22);
   }
 
-  .landzo-home-location-art::before {
+  .landzo-home-location-copy,
+  .landzo-home-location-art {
     display: none;
   }
 
-  .landzo-home-location-art::after {
-    position: absolute;
-    z-index: 2;
-    top: -10%;
-    bottom: -10%;
-    left: -48px;
-    width: 96px;
-    content: "";
-    border-radius: 50%;
-    background: #f8f3eb;
-    box-shadow: 12px 0 22px rgba(248, 243, 235, 0.34);
-    pointer-events: none;
-    transform: none;
-  }
-
-  .landzo-location-map-svg {
+  .landzo-home-map-frame {
     position: absolute;
     inset: 0;
-    z-index: 1;
-    display: block;
     width: 100%;
     height: 100%;
-    margin: 0;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-    transform: scale(1.26);
-    transform-origin: center;
+    overflow: hidden;
+    border-radius: inherit;
+    background: #dce8df;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .landzo-home-map {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: #dce8df;
+  }
+
+  .landzo-home-map .leaflet-control-container {
+    display: block;
+  }
+
+  .landzo-home-map .leaflet-control-zoom {
+    display: none;
+  }
+
+  .landzo-home-map-status,
+  .landzo-home-map-open-link {
+    position: absolute;
+    z-index: 600;
+    top: 23px;
+    display: inline-flex;
+    height: 44px;
+    align-items: center;
+    border-radius: 999px;
+    color: #f8f4ef;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .landzo-home-map-status {
+    left: 23px;
+    gap: 10px;
+    padding: 0 18px;
+    border: 1px solid rgba(223, 189, 104, 0.18);
+    background: rgba(23, 49, 38, 0.94);
+  }
+
+  .landzo-home-map-status > span {
+    width: 10px;
+    height: 10px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: #dfbd68;
+    box-shadow: 0 0 0 4px rgba(223, 189, 104, 0.12);
+  }
+
+  .landzo-home-map-open-link {
+    right: 23px;
+    gap: 9px;
+    padding: 0 18px;
+    background: #c75a36;
+    transition: transform 180ms ease, background-color 180ms ease;
+  }
+
+  .landzo-home-map-open-link:hover {
+    transform: translateY(-1px);
+    background: #ad482a;
+  }
+
+  .landzo-home-map-open-link:focus-visible {
+    outline: 3px solid rgba(223, 189, 104, 0.6);
+    outline-offset: 3px;
+  }
+
+  .landzo-home-map-open-link .landzo-open-map-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .landzo-home-map-caption {
+    position: absolute;
+    z-index: 600;
+    right: 23px;
+    bottom: 21px;
+    left: 23px;
+    display: flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px 18px;
+    border: 1px solid rgba(223, 189, 104, 0.12);
+    border-radius: 15px;
+    background: rgba(23, 49, 38, 0.9);
+    color: rgba(248, 244, 239, 0.78);
+    font-family: "Manrope", sans-serif;
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    pointer-events: none;
+  }
+
+  .landzo-home-map .leaflet-control-attribution {
+    border-radius: 6px 0 0;
+    background: rgba(248, 244, 239, 0.88);
+    color: #53645b;
+    font-size: 10px;
+  }
+
+  .landzo-home-map-message {
+    position: absolute;
+    z-index: 500;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: rgba(248, 244, 239, 0.78);
+    color: #53645b;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .landzo-home-map-message.is-error {
+    background: #f3ebe4;
+    color: #173126;
+  }
+
+  .landzo-home-map-message.is-data-error {
+    inset: auto auto 16px 16px;
+    width: max-content;
+    max-width: calc(100% - 32px);
+    padding: 8px 12px;
+    border: 1px solid rgba(23, 49, 38, 0.12);
+    border-radius: 10px;
+    background: rgba(248, 244, 239, 0.94);
+    box-shadow: 0 4px 14px rgba(23, 49, 38, 0.1);
+    font-size: 0.75rem;
+  }
+
+  .landzo-home-map .public-explore-marker {
+    cursor: pointer;
   }
 }
 
-@media (min-width: 1200px) {
-  .landzo-home-location-inner {
-    grid-template-columns: minmax(0, 0.36fr) minmax(0, 0.64fr);
-    height: clamp(280px, 21vw, 310px);
+@media (min-width: 1025px) and (max-width: 1199px) {
+  .landzo-home-location-section {
+    padding: 64px 0 70px;
   }
 
-  .landzo-home-location-copy {
-    padding: 40px;
+  .landzo-home-location-heading-row {
+    padding-top: 52px;
   }
 
-  .landzo-home-location-copy p {
-    max-width: 380px;
-    font-size: 1rem;
+  .landzo-home-location-heading-copy h2 {
+    font-size: clamp(2.8rem, 4vw, 3.4rem);
+  }
+
+  .landzo-home-location-map-stage {
+    height: clamp(480px, 42vw, 510px);
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1599px) {
+  .landzo-home-location-map-stage {
+    height: clamp(530px, 39vw, 570px);
   }
 }
 
 @media (min-width: 1600px) {
-  .landzo-home-location-inner {
-    height: 310px;
+  .landzo-home-location-map-stage {
+    height: 570px;
   }
 }
 
@@ -47760,37 +48611,92 @@ body:has(.landzo-public-blog-page) .public-main {
    LANDZO HOME - DESKTOP PURPOSE CAROUSEL
    ========================================================= */
 
+.landzo-purpose-eyebrow,
+.landzo-purpose-card-description,
+.landzo-purpose-card-cta {
+  display: none;
+}
+
 @media (min-width: 1025px) {
   .landzo-purpose-section {
     overflow: hidden;
+    padding: 72px 0 80px;
+    background: #f3ebe4;
   }
 
   .landzo-purpose-inner {
-    width: min(92vw, 1450px);
+    width: min(90vw, 1450px);
     margin-inline: auto;
   }
 
+  .landzo-purpose-eyebrow {
+    display: block;
+    margin: 0 0 16px;
+    color: #c75a36;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
   .landzo-purpose-heading-row {
+    display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 30px;
+  }
+
+  .landzo-purpose-heading-row h2 {
+    margin: 0;
+    color: #173126;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(2.8rem, 3.3vw, 3.5rem);
+    font-weight: 600;
+    line-height: 1;
   }
 
   .landzo-purpose-see-all {
     display: inline-flex;
     align-items: center;
     flex: 0 0 auto;
-    gap: 6px;
+    gap: 7px;
+    color: #c75a36;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 700;
     white-space: nowrap;
+  }
+
+  .landzo-purpose-see-all-icon {
+    display: inline-flex;
+    width: auto;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+  }
+
+  .landzo-purpose-see-all-icon svg,
+  .landzo-purpose-see-all-icon .landzo-featured-arrow-icon {
+    width: 14px;
+    height: 14px;
   }
 
   .landzo-purpose-track {
     display: flex;
     flex-wrap: nowrap;
     align-items: stretch;
-    gap: 20px;
+    gap: 26px;
     width: 100%;
     overflow-x: hidden;
     overflow-y: hidden;
-    padding: 2px 0 8px;
+    padding: 4px 3px 14px;
     scroll-behavior: auto;
     scrollbar-width: none;
   }
@@ -47802,28 +48708,104 @@ body:has(.landzo-public-blog-page) .public-main {
   .landzo-purpose-card,
   .landzo-purpose-card:nth-child(n + 5) {
     display: flex;
-    flex: 0 0 32.5%;
-    min-height: 200px;
-    height: 200px;
-    padding: 20px;
-    border-radius: 19px;
+    flex: 0 0 calc((100% - 52px) / 3);
+    height: 330px;
+    min-height: 300px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 32px 30px;
+    border: 1px solid rgba(23, 49, 38, 0.08);
+    border-radius: 27px;
+    background: #fff;
+    box-shadow: 0 12px 28px rgba(23, 49, 38, 0.06);
+    color: #173126;
+    text-align: left;
+    text-decoration: none;
+    transition: transform 220ms ease, box-shadow 220ms ease;
+  }
+
+  .landzo-purpose-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 34px rgba(23, 49, 38, 0.1);
+  }
+
+  .landzo-purpose-card:focus-visible {
+    outline: 3px solid rgba(199, 90, 54, 0.5);
+    outline-offset: 3px;
   }
 
   .landzo-purpose-icon-shell {
-    width: 38px;
-    height: 38px;
+    display: grid;
+    width: 68px;
+    height: 68px;
+    flex: 0 0 68px;
+    place-items: center;
+    border-radius: 19px;
+    background: #f8f4ef;
+    color: #173126;
+    transition: background-color 220ms ease, color 220ms ease;
   }
 
   .landzo-purpose-icon {
-    width: 100%;
-    height: 100%;
+    display: block;
+    width: 35px;
+    height: 35px;
   }
 
   .landzo-purpose-card-title {
-    max-width: 220px;
-    font-size: 0.9375rem;
+    display: block;
+    max-width: 100%;
+    margin-top: 27px;
+    color: #173126;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 1.625rem;
+    font-weight: 600;
+    line-height: 1.05;
+    transition: color 220ms ease;
+  }
+
+  .landzo-purpose-card-description {
+    display: -webkit-box;
+    overflow: hidden;
+    margin-top: 13px;
+    color: #59675f;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.90625rem;
+    line-height: 1.5;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .landzo-purpose-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: auto;
+    padding-top: 24px;
+    color: #c75a36;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.875rem;
     font-weight: 700;
     line-height: 1.3;
+  }
+
+  .landzo-purpose-card-cta > span {
+    display: inline-block;
+    transition: transform 180ms ease;
+  }
+
+  .landzo-purpose-card:hover .landzo-purpose-card-cta > span {
+    transform: translateX(3px);
+  }
+
+  .landzo-purpose-card.is-active .landzo-purpose-icon-shell {
+    background: #173126;
+    color: #f8f4ef;
+  }
+
+  .landzo-purpose-card.is-active .landzo-purpose-card-title {
+    color: #c75a36;
   }
 
   .landzo-purpose-dots {
@@ -47831,7 +48813,7 @@ body:has(.landzo-public-blog-page) .public-main {
     align-items: center;
     justify-content: center;
     gap: 6px;
-    margin: 14px auto 0;
+    margin: 21px auto 0;
   }
 
   .landzo-purpose-dots button {
@@ -47851,21 +48833,26 @@ body:has(.landzo-public-blog-page) .public-main {
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1025px) and (max-width: 1199px) {
+  .landzo-purpose-track {
+    gap: 26px;
+  }
+
   .landzo-purpose-card,
   .landzo-purpose-card:nth-child(n + 5) {
-    flex-basis: 28.5%;
-    min-height: 210px;
-    height: 210px;
+    flex-basis: calc((100% - 52px) / 3);
+    padding: 30px 27px;
+  }
+
+  .landzo-purpose-card-title {
+    font-size: 1.5rem;
   }
 }
 
-@media (min-width: 1600px) {
+@media (min-width: 1200px) {
   .landzo-purpose-card,
   .landzo-purpose-card:nth-child(n + 5) {
-    flex-basis: 27%;
-    min-height: 210px;
-    height: 210px;
+    flex-basis: calc((100% - 78px) / 4);
   }
 }
 
@@ -47897,6 +48884,18 @@ body:has(.landzo-public-blog-page) .public-main {
    ========================================================= */
 
 @media (min-width: 1025px) {
+  @keyframes landzo-trust-reveal {
+    from {
+      transform: translateY(18px);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
   .landzo-trust-section {
     padding: 62px 0 70px;
     background: #f3ebe4;
@@ -48158,5 +49157,1521 @@ body:has(.landzo-public-blog-page) .public-main {
         font-weight: 700;
         line-height: 1.3;
         text-align: center;
+    }
+}
+
+/* =========================================================
+   LANDZO HOME - AUTHORITATIVE DESKTOP HERO
+   ========================================================= */
+
+.landzo-home-hero-desktop-image {
+  display: none;
+}
+
+@media (min-width: 1025px) {
+  .landzo-public-header.is-home {
+    position: relative;
+    inset: auto;
+    padding: 8px 16px;
+    background: transparent;
+    pointer-events: auto;
+  }
+
+  .landzo-public-header.is-home .landzo-public-nav {
+    pointer-events: auto;
+  }
+
+  .landzo-public-header.is-home .landzo-nav-shell {
+    height: 80px;
+    min-height: 80px;
+  }
+
+  .landzo-home-hero {
+    height: clamp(620px, calc(100svh - 126px), 850px);
+    min-height: 620px;
+    width: min(calc(100% - 32px), 1760px);
+    margin: 10px auto 0;
+    border-radius: 24px 24px 28px 28px;
+    overflow: visible;
+    z-index: 2;
+    box-shadow: 0 16px 34px rgba(16, 49, 39, 0.08);
+    background: transparent;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .landzo-home-hero-desktop-image {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    object-fit: cover;
+    object-position: center center;
+    pointer-events: none;
+  }
+
+  .landzo-home-hero-art {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .landzo-home-hero-art .landzo-home-hero-art-image,
+  .landzo-home-hero-art > rect {
+    clip-path: none;
+  }
+
+  .landzo-home-hero-art .landzo-home-hero-art-image {
+    display: none;
+  }
+
+  .landzo-home-hero-inner {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    align-content: stretch;
+    row-gap: clamp(40px, 4.5vh, 48px);
+    width: 100%;
+    max-width: none;
+    min-height: 0;
+    margin-inline: auto;
+    padding: 80px 0 30px;
+    box-sizing: border-box;
+  }
+
+  .landzo-home-hero-copy {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: center;
+    align-self: start;
+    width: min(100% - 48px, 1100px);
+    min-width: 0;
+    margin-inline: auto;
+    padding: 0;
+    text-align: center;
+  }
+
+  .landzo-home-eyebrow {
+    margin: 0 0 16px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+  }
+
+  .landzo-home-hero-copy h1 {
+    max-width: clamp(900px, 72vw, 1100px);
+    margin: 0 auto;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(3.7rem, 4.8vw, 4.5rem);
+    font-weight: 500;
+    line-height: 0.96;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  .landzo-home-highlight {
+    margin: 14px auto 0;
+    font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+    line-height: 1.35;
+    text-align: center;
+  }
+
+  .landzo-home-description {
+    max-width: 680px;
+    margin: 18px auto 0;
+    font-size: clamp(0.9375rem, 1.05vw, 1.0625rem);
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  .landzo-hero-property {
+    position: absolute;
+    top: -64px;
+    right: clamp(36px, 5vw, 76px);
+    z-index: 3;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-rows: repeat(3, auto);
+    grid-template-areas:
+      "status code action"
+      "status title action"
+      "status location action";
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 1px;
+    width: clamp(340px, 26vw, 390px);
+    min-height: 92px;
+    padding: 12px 16px;
+    border: 1px solid rgba(223, 189, 104, 0.28);
+    border-radius: 21px;
+    background: #173126;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.16);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-sizing: border-box;
+    animation: landzoHeroPropertyFloat 4.5s ease-in-out infinite;
+    transition: border-color 160ms ease, transform 160ms ease;
+  }
+
+  .landzo-hero-property:hover {
+    border-color: rgba(223, 189, 104, 0.52);
+    animation: none;
+    transform: translateY(-2px);
+  }
+
+  .landzo-hero-property-top {
+    display: contents;
+  }
+
+  .landzo-hero-property-label {
+    grid-area: code;
+    color: #dfbd68;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .landzo-hero-property-status {
+    grid-area: status;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 13px;
+    border-radius: 11px;
+    background: #b74d27;
+    color: #fff;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .landzo-hero-property-location {
+    grid-area: location;
+    margin-top: 0;
+    color: rgba(248, 245, 239, 0.68);
+    font-family: "Manrope", sans-serif;
+    font-size: 0.75rem;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .landzo-hero-property strong {
+    grid-area: title;
+    margin-top: 0;
+    color: #f8f5ef;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.05;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .landzo-hero-property-link {
+    grid-area: action;
+    display: inline-flex;
+    align-items: center;
+    justify-self: end;
+    min-height: 38px;
+    margin: 0;
+    padding: 0 16px;
+    border: 1px solid rgba(223, 189, 104, 0.1);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #f8f5ef;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: background-color 160ms ease, color 160ms ease;
+  }
+
+  .landzo-hero-property-link-full {
+    display: none;
+  }
+
+  .landzo-hero-property:hover .landzo-hero-property-link {
+    background: rgba(255, 255, 255, 0.12);
+    color: #dfbd68;
+  }
+
+  @keyframes landzoHeroPropertyFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .landzo-hero-property {
+      animation: none;
+      transition: none;
+    }
+  }
+
+  .landzo-home-search {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    z-index: 20;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: grid;
+    align-self: end;
+    justify-self: center;
+    width: min(76vw, 800px);
+    margin: 0 auto;
+    padding: 12px;
+    gap: 8px;
+    border-radius: 19px;
+    overflow: visible;
+    transform: none;
+  }
+
+  .landzo-home-search-tabs {
+    width: 100%;
+    height: 46px;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    padding: 3px;
+  }
+
+  .landzo-home-search-tabs label > span {
+    min-height: 38px;
+    gap: 7px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .landzo-home-search-tabs label > span > span {
+    font-size: 0.88rem;
+  }
+
+  .landzo-home-search-fields {
+    display: contents;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  .landzo-home-search-fields > label,
+  .landzo-home-filter-select {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    height: 50px;
+    min-height: 50px;
+    box-sizing: border-box;
+    border-radius: 10px;
+  }
+
+  .landzo-home-search-fields > label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6px 11px;
+  }
+
+  .landzo-home-filter-select {
+    padding: 6px 11px;
+  }
+
+  .landzo-home-search-fields > label > span,
+  .landzo-home-filter-select .landzo-filter-select-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .landzo-home-search-fields input,
+  .landzo-home-filter-select .landzo-filter-select-trigger {
+    min-height: 22px;
+    margin-top: 2px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .landzo-home-filter-select .landzo-filter-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .landzo-home-filter-select .landzo-filter-select-chevron {
+    width: 8px;
+    height: 8px;
+    flex: 0 0 8px;
+    margin-right: 1px;
+  }
+
+  .landzo-home-filter-select:has(.landzo-filter-select-trigger[aria-expanded="true"]) {
+    z-index: 500;
+  }
+
+  .landzo-home-filter-select .landzo-filter-select-menu {
+    z-index: 1000;
+  }
+
+  .landzo-home-search-fields > label:first-child {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .landzo-home-search-fields > .landzo-home-filter-select:nth-of-type(1) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .landzo-home-search-fields > .landzo-home-filter-select:nth-of-type(2) {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .landzo-home-search-fields > .landzo-home-filter-select:nth-of-type(3) {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .landzo-home-search-submit {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    width: 100%;
+    height: 48px;
+    min-height: 48px;
+    margin: 0;
+    border-radius: 10px;
+    background: #b74d27;
+    box-shadow: 0 8px 18px rgba(157, 63, 28, 0.22);
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 700;
+  }
+
+  .landzo-home-search-submit:hover {
+    background: #9f401f;
+  }
+}
+
+@media (min-width: 1200px) {
+  .landzo-home-hero-inner {
+    min-height: 0;
+  }
+}
+
+@media (min-width: 1600px) {
+  .landzo-home-hero-inner {
+    min-height: 0;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1199px) {
+  .landzo-home-hero-copy h1 {
+    max-width: clamp(900px, 78vw, 1040px);
+  }
+
+  .landzo-hero-property {
+    width: 340px;
+  }
+
+  .landzo-home-search {
+    width: min(76vw, 760px);
+  }
+}
+
+@media (min-width: 1025px) {
+  .landzo-home-hero + .public-featured-section {
+    padding-block: 80px;
+    background: #f8f5ef;
+  }
+
+  .landzo-home-hero + .public-featured-section > .public-container {
+    width: min(92vw, 1450px);
+    max-width: none;
+    margin-inline: auto;
+  }
+
+  .landzo-home-hero + .public-featured-section .public-section-heading-row {
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 32px;
+    margin-bottom: 36px;
+  }
+
+  .landzo-home-hero + .public-featured-section .public-section-heading-row > div {
+    min-width: 0;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-eyebrow {
+    display: block;
+    margin-bottom: 10px;
+    color: #b74d27;
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+  }
+
+  .landzo-home-hero + .public-featured-section .public-section-heading-row h2 {
+    color: #173126;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(2.5rem, 3vw, 3.2rem);
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .landzo-home-hero + .public-featured-section .public-section-heading-row p {
+    max-width: 640px;
+    margin-top: 12px;
+    color: #59675f;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2px;
+    color: #173126;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-view-all-icon,
+  .landzo-home-hero + .public-featured-section .landzo-featured-view-all-icon svg {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border-radius: 50%;
+    background: #f2e6d9;
+    color: #b74d27;
+    transition: transform 220ms ease, background-color 220ms ease;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-view-all:hover
+    .landzo-featured-view-all-icon {
+    transform: translateX(3px);
+    background: #ead8c7;
+  }
+
+  .landzo-home-hero + .public-featured-section .public-featured-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 390px));
+    justify-content: center;
+    align-items: stretch;
+    gap: 26px;
+  }
+
+  .landzo-home-hero + .public-featured-section .public-featured-grid.has-two-cards {
+    grid-template-columns: repeat(2, minmax(0, 390px));
+    justify-content: center;
+  }
+
+  .landzo-home-hero + .public-featured-section .public-featured-grid.has-carousel {
+    display: flex;
+    justify-content: flex-start;
+    gap: 26px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .landzo-home-hero + .public-featured-section .public-featured-grid.has-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .landzo-home-hero + .public-featured-section .public-featured-grid.has-carousel > .landzo-home-featured-card {
+    flex: 0 0 calc((100% - 52px) / 3);
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-carousel-shell.has-carousel {
+    display: grid;
+    width: min(90vw, 1320px);
+    margin-inline: auto;
+    grid-template-columns: 48px minmax(0, 1fr) 48px;
+    align-items: center;
+    column-gap: 14px;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-carousel-shell.has-carousel .public-featured-grid {
+    min-width: 0;
+    width: 100%;
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-carousel-shell.has-carousel .landzo-featured-carousel-prev {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-carousel-shell.has-carousel .landzo-featured-carousel-next {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    width: 100%;
+    max-width: 390px;
+    height: auto;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(23, 49, 38, 0.1);
+    border-radius: 25px;
+    background: #fff;
+    box-shadow: 0 14px 32px rgba(23, 49, 38, 0.08);
+    transition: transform 240ms ease, box-shadow 240ms ease;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(23, 49, 38, 0.14);
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-image-link {
+    display: block;
+    flex: 0 0 auto;
+    overflow: hidden;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-media {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: 24px 24px 0 0;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-media img,
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-fallback {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 240ms ease;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card:hover .public-property-card-media img {
+    transform: scale(1.015);
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-transaction {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: #c75a36;
+    color: #fff;
+    font-family: "Manrope", sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-transaction.is-rent {
+    background: #39789a;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-transaction.is-lease {
+    background: #4b764e;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-save {
+    display: grid;
+    place-items: center;
+    top: 16px;
+    right: 16px;
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    min-height: 46px;
+    padding: 0;
+    border-radius: 50%;
+    border-color: rgba(23, 49, 38, 0.14);
+    background: #fbfaf6 !important;
+    color: #173126 !important;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-save.is-saved {
+    color: #c75a36 !important;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-body {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 0;
+    padding: 18px 20px 14px;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 28px;
+    margin-bottom: 12px;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-meta .public-property-card-code {
+    color: #59675f;
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-type {
+    padding: 6px 11px;
+    border-radius: 9px;
+    background: #edf6f0;
+    color: #173126;
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-heading {
+    display: block;
+    margin: 0;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-heading .public-property-card-code {
+    display: none;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card h3 {
+    margin: 0;
+    color: #173126;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(1.5rem, 1.8vw, 1.6875rem);
+    font-weight: 600;
+    line-height: 1.08;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-title:hover {
+    color: #b74d27;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-location {
+    display: -webkit-box;
+    max-width: 100%;
+    margin-top: 10px;
+    overflow: hidden;
+    color: #68756e;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(23, 49, 38, 0.1);
+    color: #53645b;
+    font-size: 0.8125rem;
+    line-height: 1.3;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-details span {
+    white-space: normal;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-footer {
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: auto;
+    padding: 16px 18px 20px;
+    border-top: 1px solid rgba(23, 49, 38, 0.1);
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-price {
+    display: flex;
+    min-width: 0;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-price-label {
+    display: block;
+    color: #68756e;
+    font-size: 0.6875rem;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-price strong {
+    color: #173126;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(1.375rem, 1.7vw, 1.5625rem);
+    font-weight: 600;
+    line-height: 1.1;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-footer .public-property-card-tags {
+    display: none;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-enquire {
+    display: inline-flex;
+    min-height: 42px;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    padding: 0 18px;
+    border-radius: 13px;
+    background: #173126;
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 180ms ease, transform 180ms ease;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-enquire:hover {
+    transform: translateY(-1px);
+    background: #254a39;
+  }
+}
+
+@media (min-width: 1200px) {
+  .landzo-home-hero + .public-featured-section > .public-container {
+    width: min(88vw, 1320px);
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1199px) {
+  .landzo-home-hero + .public-featured-section .public-featured-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-content: center;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-carousel-shell.has-carousel {
+    grid-template-columns: 40px minmax(0, 1fr) 40px;
+    column-gap: 11px;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-featured-carousel-button {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (min-width: 1025px) and (prefers-reduced-motion: reduce) {
+  .landzo-home-hero + .public-featured-section .public-featured-grid.has-carousel {
+    scroll-behavior: auto;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card,
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card *,
+  .landzo-home-hero + .public-featured-section .landzo-featured-view-all-icon {
+    scroll-behavior: auto;
+    transition-duration: 0.01ms;
+  }
+}
+
+@media (max-width: 640px) {
+  .public-featured-section .landzo-home-featured-content {
+    display: flex;
+    flex-direction: column;
+    grid-column: 2;
+    grid-row: 1;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .public-featured-section .landzo-home-featured-body {
+    height: auto !important;
+    flex: 1 1 auto;
+    justify-content: flex-start;
+    min-height: 0;
+    gap: calc(6 / 1250 * 100vw);
+    padding:
+      calc(12 / 1250 * 100vw)
+      calc(24 / 1250 * 100vw)
+      calc(10 / 1250 * 100vw)
+      calc(31 / 1250 * 100vw);
+  }
+
+  .public-featured-section .landzo-home-featured-body .public-property-card-location,
+  .public-featured-section .landzo-home-featured-body .public-property-card-details {
+    margin-top: 0;
+  }
+
+  .public-featured-section .landzo-home-featured-footer {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    width: 100%;
+    margin-top: auto;
+    padding: 6px 0 0;
+    border-top: 0;
+  }
+
+  .public-featured-section .landzo-home-featured-price {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin: 0 0 3px;
+    line-height: 1.15;
+  }
+
+  .public-featured-section .landzo-home-featured-price strong {
+    color: #173126;
+    font-size: 11.5px;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .public-featured-section .landzo-home-featured-footer .public-property-card-tags {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .public-featured-section .landzo-home-featured-footer .public-property-card-tags span {
+    font-size: 8.5px;
+    line-height: 1.2;
+  }
+
+  .public-featured-section .landzo-home-featured-footer .landzo-home-featured-enquire {
+    display: none !important;
+  }
+}
+
+/* =========================================================
+   LANDZO HOME - DESKTOP TRUST LAYOUT
+   ========================================================= */
+
+.landzo-trust-desktop-layout {
+  display: none;
+}
+
+@media (min-width: 1025px) {
+  .landzo-trust-section .landzo-trust-desktop-layout {
+    display: grid;
+  }
+
+  .landzo-trust-section .landzo-trust-mobile-layout {
+    display: none;
+  }
+
+  .landzo-trust-section.landzo-trust-section {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(56px, 4.8vw, 70px) 0;
+    background: #173126;
+    isolation: isolate;
+  }
+
+  .landzo-trust-section.landzo-trust-section::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background-image: radial-gradient(
+      circle,
+      rgba(223, 189, 104, 0.17) 1px,
+      transparent 1.2px
+    );
+    background-position: 8px 8px;
+    background-size: 26px 26px;
+    content: "";
+    opacity: 0.38;
+    pointer-events: none;
+  }
+
+  .landzo-trust-section .landzo-trust-card.landzo-trust-desktop-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
+    align-items: center;
+    gap: clamp(52px, 6vw, 92px);
+    width: min(90vw, 1450px);
+    max-width: none;
+    height: auto;
+    min-height: 0;
+    margin-inline: auto;
+    overflow: visible;
+    aspect-ratio: auto;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+  }
+
+  .landzo-trust-section .landzo-trust-background {
+    display: none;
+  }
+
+  .landzo-trust-section .landzo-trust-content {
+    position: relative;
+    inset: auto;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    max-width: 510px;
+    height: auto;
+    padding: 0;
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    animation: none;
+  }
+
+  .landzo-trust-section.is-revealed .landzo-trust-content {
+    animation: landzo-trust-reveal 650ms ease both;
+  }
+
+  .landzo-trust-section.is-revealed .landzo-trust-feature-card {
+    animation: landzo-trust-reveal 600ms ease both;
+    animation-delay: var(--trust-reveal-delay, 80ms);
+  }
+
+  .landzo-trust-section .landzo-trust-eyebrow {
+    margin: 0 0 24px;
+    color: #dfbd68;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .landzo-trust-section .landzo-trust-heading {
+    display: flex;
+    flex-direction: column;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    color: #f8f4ef;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(3.75rem, 5.4vw, 5.75rem);
+    font-weight: 600;
+    letter-spacing: normal;
+    line-height: 0.86;
+  }
+
+  .landzo-trust-section .landzo-trust-heading span + span {
+    margin-top: 5px;
+  }
+
+  .landzo-trust-section .landzo-trust-description {
+    max-width: 520px;
+    margin: 30px 0 0;
+    color: rgba(248, 244, 239, 0.76);
+    font-family: "Manrope", sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .landzo-trust-section .landzo-trust-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .landzo-trust-section .landzo-trust-feature-card {
+    min-width: 0;
+    min-height: 210px;
+    padding: 30px;
+    border: 1px solid rgba(248, 244, 239, 0.12);
+    border-radius: 22px;
+    background: rgba(248, 244, 239, 0.075);
+    box-shadow: 0 12px 28px rgba(4, 22, 15, 0.1);
+    transition:
+      transform 220ms ease,
+      border-color 220ms ease,
+      background-color 220ms ease,
+      box-shadow 220ms ease;
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+  }
+
+  .landzo-trust-section .landzo-trust-feature-card:nth-child(1) {
+    --trust-reveal-delay: 80ms;
+  }
+
+  .landzo-trust-section .landzo-trust-feature-card:nth-child(2) {
+    --trust-reveal-delay: 140ms;
+  }
+
+  .landzo-trust-section .landzo-trust-feature-card:nth-child(3) {
+    --trust-reveal-delay: 200ms;
+  }
+
+  .landzo-trust-section .landzo-trust-feature-card:nth-child(4) {
+    --trust-reveal-delay: 260ms;
+  }
+
+  .landzo-trust-section .landzo-trust-feature-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(223, 189, 104, 0.34);
+    background: rgba(248, 244, 239, 0.1);
+    box-shadow: 0 18px 34px rgba(4, 22, 15, 0.18);
+  }
+
+  .landzo-trust-section .landzo-trust-feature-icon {
+    display: grid;
+    width: 54px;
+    height: 54px;
+    place-items: center;
+    border: 1px solid rgba(223, 189, 104, 0.12);
+    border-radius: 16px;
+    background: rgba(223, 189, 104, 0.13);
+    transition: transform 220ms ease, background-color 220ms ease;
+  }
+
+  .landzo-trust-section .landzo-trust-feature-card:hover .landzo-trust-feature-icon {
+    transform: scale(1.04);
+    background: rgba(223, 189, 104, 0.2);
+  }
+
+  .landzo-trust-section .landzo-trust-feature-icon img {
+    display: block;
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+  }
+
+  .landzo-trust-section .landzo-trust-feature-card h3 {
+    margin: 23px 0 8px;
+    color: #f8f4ef;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(1.45rem, 1.8vw, 1.75rem);
+    font-weight: 600;
+    line-height: 1.05;
+  }
+
+  .landzo-trust-section .landzo-trust-feature-card p {
+    margin: 0;
+    color: rgba(248, 244, 239, 0.68);
+    font-family: "Manrope", sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1199px) {
+  .landzo-trust-section .landzo-trust-card.landzo-trust-desktop-layout {
+    grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr);
+    gap: 48px;
+  }
+
+  .landzo-trust-section .landzo-trust-feature-card {
+    min-height: 200px;
+    padding: 24px;
+  }
+
+  .landzo-trust-section .landzo-trust-heading {
+    font-size: clamp(3.5rem, 5vw, 4.4rem);
+  }
+}
+
+@media (min-width: 1025px) and (prefers-reduced-motion: reduce) {
+  .landzo-trust-section .landzo-trust-card.landzo-trust-desktop-layout,
+  .landzo-trust-section .landzo-trust-content,
+  .landzo-trust-section .landzo-trust-feature-card {
+    transform: none;
+    animation: none;
+    opacity: 1;
+    visibility: visible;
+    transition: none;
+  }
+}
+
+
+
+@media (max-width: 640px) {
+    .public-featured-section .landzo-home-featured-footer {
+        display: flex;
+        flex: 0 0 auto;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        width: 100%;
+        margin-top: auto;
+        padding: 1px 9px 8px;
+        border-top: 0;
+    }
+}
+@media (max-width: 640px) {
+    .public-featured-section .landzo-home-featured-body {
+        height: auto !important;
+        flex: 1 1 auto;
+        justify-content: flex-start;
+        min-height: 0;
+        gap: calc(6 / 1250 * 100vw);
+        padding: calc(42 / 1250 * 100vw) calc(24 / 1250 * 100vw) calc(0 / 1250 * 100vw) calc(28 / 1250 * 100vw);
+    }
+}
+
+@media (max-width: 640px) {
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-transaction {
+    top: 12px;
+    left: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 9px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .landzo-home-hero + .public-featured-section > .public-container {
+    box-sizing: border-box;
+    width: min(92vw, 920px);
+    max-width: 920px;
+    margin-inline: auto;
+  }
+
+  .landzo-home-hero + .public-featured-section .public-featured-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    height: auto;
+    min-height: 0;
+    flex-direction: column;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-image-link {
+    display: block;
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-media {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-body {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-body h3,
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-body .public-property-card-location,
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-body .public-property-card-details {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-footer {
+    flex: 0 0 auto;
+    min-width: 0;
+    margin-top: auto;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-transaction {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 999px;
+    background: #c75a36;
+    color: #fff;
+    font-family: "Manrope", sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-transaction.is-rent {
+    background: #39789a;
+  }
+
+  .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-transaction.is-lease {
+    background: #4b764e;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 699px) {
+  .landzo-home-hero + .public-featured-section .public-featured-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+
+
+@media (max-width: 640px) {
+    .landzo-home-hero + .public-featured-section .landzo-home-featured-card .public-property-card-transaction {
+        top: 12px;
+        left: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 17px;
+        padding: 0 10px;
+        border-radius: 4px;
+        font-size: 9px;
+        line-height: 1;
+        white-space: nowrap;
+    }
+}
+@media (min-width: 641px) and (max-width: 1024px) {
+    .public-property-card-bottom strong {
+        min-width: 0;
+        padding-left: 10px;
+        font-size: clamp(0.82rem, 1.65vw, 0.94rem);
+        line-height: 1.25;
+        padding-bottom: 6px;
+    }
+}
+@media (min-width: 641px) and (max-width: 1024px) {
+    .public-property-card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 4px 7px;
+        max-width: 48%;
+        text-align: right;
+        padding-right: 10px;
+        padding-bottom: 6px;
+    }
+}
+
+/* LANDZO HOME - DESKTOP LIST PROPERTY CTA */
+.landzo-list-property-eyebrow {
+  display: none;
+}
+
+@media (min-width: 1025px) {
+  .landzo-list-property-section {
+    margin: clamp(34px, 4.2vw, 58px) 0 clamp(36px, 4vw, 60px);
+    padding: 0;
+    background: transparent;
+  }
+
+  .landzo-list-property-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(380px, 0.95fr);
+    align-items: center;
+    gap: clamp(32px, 4vw, 64px);
+    width: min(90vw, 1500px);
+    height: auto;
+    min-height: unset;
+    margin-inline: auto;
+    padding: clamp(30px, 3vw, 46px) clamp(40px, 4vw, 64px);
+    overflow: hidden;
+    border: 1px solid rgba(23, 49, 38, 0.08);
+    border-radius: 32px;
+    background: #f3ebe4;
+    box-shadow: 0 16px 38px rgba(23, 49, 38, 0.09);
+  }
+
+  .landzo-list-property-card::before {
+    opacity: 0.08;
+  }
+
+  .landzo-list-property-copy {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    width: 100%;
+    max-width: 720px;
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .landzo-list-property-eyebrow {
+    display: block;
+    margin: 0 0 14px;
+    color: #b74d27;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .landzo-list-property-copy h2 {
+    max-width: 650px;
+    margin: 0;
+    color: #173126;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(2.7rem, 3.4vw, 3.8rem);
+    font-weight: 600;
+    line-height: 0.98;
+  }
+
+  .landzo-list-property-heading-break {
+    display: none;
+  }
+
+  .landzo-list-property-copy p {
+    max-width: 430px;
+    margin: 21px 0 0;
+    color: #59675f;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.96875rem;
+    line-height: 1.5;
+  }
+
+  .landzo-list-property-button {
+    display: inline-flex;
+    min-height: 52px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+    padding: 0 26px;
+    border: 1px solid rgba(155, 69, 39, 0.2);
+    border-radius: 11px;
+    background: #c75a35;
+    box-shadow: 0 10px 22px rgba(157, 63, 28, 0.2);
+    color: #fff;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.90625rem;
+    font-weight: 800;
+    text-decoration: none;
+    transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .landzo-list-property-button:hover {
+    transform: translateY(-2px);
+    background: #ad482a;
+    box-shadow: 0 13px 26px rgba(157, 63, 28, 0.24);
+  }
+
+  .landzo-list-property-button:focus-visible {
+    outline: 3px solid rgba(199, 90, 53, 0.42);
+    outline-offset: 3px;
+  }
+
+  .landzo-list-property-art {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    min-width: 0;
+    min-height: clamp(260px, 20vw, 320px);
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .landzo-list-property-art img {
+    display: block;
+    width: min(100%, 480px);
+    height: auto;
+    max-height: 380px;
+    object-fit: contain;
+    object-position: center;
+    filter: drop-shadow(0 18px 22px rgba(34, 45, 29, 0.12));
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1199px) {
+  .landzo-list-property-card {
+    grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+    gap: 30px;
+    padding: 30px 40px;
+    border-radius: 28px;
+  }
+
+  .landzo-list-property-copy h2 {
+    font-size: clamp(2.7rem, 3.4vw, 3.2rem);
+  }
+
+  .landzo-list-property-art {
+    min-height: 260px;
+  }
+
+  .landzo-list-property-art img {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 640px) {
+    .landzo-static-hero {
+        padding: 87px 0 52px;
     }
 }

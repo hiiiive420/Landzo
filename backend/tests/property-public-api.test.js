@@ -203,6 +203,177 @@ describe("public property list API", () => {
     });
   });
 
+  it("suggests unique location prefixes used by public properties only", async () => {
+    const province = await createLocationRecord({
+      name: "Western Province",
+      level: LOCATION_LEVELS.PROVINCE,
+    });
+    const district = await createLocationRecord({
+      name: "Colombo District",
+      level: LOCATION_LEVELS.DISTRICT,
+      parent: province._id,
+    });
+    const city = await createLocationRecord({
+      name: "Colombo",
+      level: LOCATION_LEVELS.CITY,
+      parent: district._id,
+    });
+    const area = await createLocationRecord({
+      name: "Colombo 03",
+      level: LOCATION_LEVELS.AREA,
+      parent: city._id,
+    });
+    await createLocationRecord({
+      name: "Cove Gardens",
+      level: LOCATION_LEVELS.AREA,
+      parent: city._id,
+    });
+    const hiddenProvince = await createLocationRecord({
+      name: "Central Province",
+      level: LOCATION_LEVELS.PROVINCE,
+    });
+    const hiddenDistrict = await createLocationRecord({
+      name: "Copper District",
+      level: LOCATION_LEVELS.DISTRICT,
+      parent: hiddenProvince._id,
+    });
+    const hiddenCity = await createLocationRecord({
+      name: "Copper",
+      level: LOCATION_LEVELS.CITY,
+      parent: hiddenDistrict._id,
+    });
+    const hiddenArea = await createLocationRecord({
+      name: "Copper Hill",
+      level: LOCATION_LEVELS.AREA,
+      parent: hiddenCity._id,
+    });
+    const hierarchy = { province, district, city, area };
+    const coastalProvince = await createLocationRecord({
+      name: "Coastal Province",
+      level: LOCATION_LEVELS.PROVINCE,
+    });
+    const coastalDistrict = await createLocationRecord({
+      name: "Coastal District",
+      level: LOCATION_LEVELS.DISTRICT,
+      parent: coastalProvince._id,
+    });
+    const coralCity = await createLocationRecord({
+      name: "Coral Bay",
+      level: LOCATION_LEVELS.CITY,
+      parent: coastalDistrict._id,
+    });
+    const coastArea = await createLocationRecord({
+      name: "Coastline",
+      level: LOCATION_LEVELS.AREA,
+      parent: coralCity._id,
+    });
+    const chilawProvince = await createLocationRecord({
+      name: "North Western Province",
+      level: LOCATION_LEVELS.PROVINCE,
+    });
+    const chilawDistrict = await createLocationRecord({
+      name: "Puttalam District",
+      level: LOCATION_LEVELS.DISTRICT,
+      parent: chilawProvince._id,
+    });
+    const chilawCity = await createLocationRecord({
+      name: "Chilaw",
+      level: LOCATION_LEVELS.CITY,
+      parent: chilawDistrict._id,
+    });
+    const chilawArea = await createLocationRecord({
+      name: "Chilaw Town",
+      level: LOCATION_LEVELS.AREA,
+      parent: chilawCity._id,
+    });
+
+    await createProperty({
+      code: "LND-10001",
+      title: "First Colombo Property",
+      location: hierarchy,
+    });
+    await createProperty({
+      code: "HSE-10002",
+      title: "Second Colombo Property",
+      type: PROPERTY_TYPES.HOUSE,
+      location: hierarchy,
+    });
+    await createProperty({
+      code: "LND-10003",
+      title: "Unpublished Copper Property",
+      isPublic: false,
+      location: {
+        province: hiddenProvince,
+        district: hiddenDistrict,
+        city: hiddenCity,
+        area: hiddenArea,
+      },
+    });
+    await createProperty({
+      code: "LND-10004",
+      title: "Public Coastal Property",
+      location: {
+        province: coastalProvince,
+        district: coastalDistrict,
+        city: coralCity,
+        area: coastArea,
+      },
+    });
+    await createProperty({
+      code: "LND-10005",
+      title: "Public Chilaw Property",
+      location: {
+        province: chilawProvince,
+        district: chilawDistrict,
+        city: chilawCity,
+        area: chilawArea,
+      },
+    });
+
+    const lowercaseResponse = await request(app())
+      .get("/api/v1/properties/location-suggestions?search=c")
+      .expect(200);
+    const uppercaseResponse = await request(app())
+      .get("/api/v1/properties/location-suggestions?search=C")
+      .expect(200);
+    const twoCharacterResponse = await request(app())
+      .get("/api/v1/properties/location-suggestions?search=co")
+      .expect(200);
+    const narrowedResponse = await request(app())
+      .get("/api/v1/properties/location-suggestions?search=col")
+      .expect(200);
+    const substringResponse = await request(app())
+      .get("/api/v1/properties/location-suggestions?search=om")
+      .expect(200);
+
+    expect(lowercaseResponse.body.data).toContain("Colombo 03");
+    expect(lowercaseResponse.body.data).toContain("Colombo");
+    expect(lowercaseResponse.body.data).toContain("Colombo District");
+    expect(lowercaseResponse.body.data.length).toBeLessThanOrEqual(8);
+    expect(uppercaseResponse.body.data).toEqual(lowercaseResponse.body.data);
+    expect(narrowedResponse.body.data).toEqual([
+      "Colombo 03",
+      "Colombo",
+      "Colombo District",
+    ]);
+    expect(lowercaseResponse.body.data).toContain("Chilaw");
+    expect(twoCharacterResponse.body.data).not.toContain("Chilaw");
+    expect(twoCharacterResponse.body.data).toContain("Coral Bay");
+    expect(narrowedResponse.body.data).not.toContain("Coral Bay");
+    expect(lowercaseResponse.body.data.length).toBeGreaterThan(
+      twoCharacterResponse.body.data.length,
+    );
+    expect(twoCharacterResponse.body.data.length).toBeGreaterThan(
+      narrowedResponse.body.data.length,
+    );
+    expect(substringResponse.body.data).toEqual([]);
+    expect(lowercaseResponse.body.data).not.toContain("Cove Gardens");
+    expect(lowercaseResponse.body.data).not.toContain("Copper Hill");
+    expect(new Set(lowercaseResponse.body.data).size).toBe(
+      lowercaseResponse.body.data.length,
+    );
+  });
+
   it("returns only public non-trashed properties", async () => {
     await createProperty({
       code: "LND-10001",
@@ -747,4 +918,3 @@ it("does not use slug as the public Property identity", async () => {
   });
 });
 });
-

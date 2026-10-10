@@ -4,6 +4,7 @@ import { recordAuditLog } from "../audit/audit.service.js";
 import { recordSearchInsightSafely } from "../analytics/analytics.service.js";
 import { LOCATION_LEVELS, LOCATION_STATUSES } from "../locations/location.constants.js";
 import { Location } from "../locations/location.model.js";
+import { normalizeLocationName } from "../locations/location.utils.js";
 import {
   PROPERTY_DETAIL_KEYS,
   PROPERTY_STATUSES,
@@ -853,6 +854,84 @@ export const listPublicProperties = async (query) => {
   };
 };
 
+export const listPublicPropertyLocationSuggestions = async ({ search, limit = 8 }) => {
+  const prefix = normalizeLocationName(search);
+
+  if (!prefix) {
+    return [];
+  }
+
+  const specificityByLevel = {
+    [LOCATION_LEVELS.AREA]: 0,
+    [LOCATION_LEVELS.CITY]: 1,
+    [LOCATION_LEVELS.DISTRICT]: 2,
+    [LOCATION_LEVELS.PROVINCE]: 3,
+  };
+
+  return Location.aggregate([
+    {
+      $match: {
+        status: LOCATION_STATUSES.ACTIVE,
+        canonicalKey: { $regex: `^${escapeRegex(prefix)}` },
+      },
+    },
+    {
+      $lookup: {
+        from: Property.collection.name,
+        let: { locationId: "$_id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$isPublic", true] },
+                  { $eq: ["$deletedAt", null] },
+                  {
+                    $or: [
+                      { $eq: ["$area", "$$locationId"] },
+                      { $eq: ["$city", "$$locationId"] },
+                      { $eq: ["$district", "$$locationId"] },
+                      { $eq: ["$province", "$$locationId"] },
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+          { $project: { _id: 1 } },
+          { $limit: 1 },
+        ],
+        as: "publicProperty",
+      },
+    },
+    { $match: { "publicProperty.0": { $exists: true } } },
+    {
+      $addFields: {
+        specificity: {
+          $switch: {
+            branches: Object.entries(specificityByLevel).map(([level, order]) => ({
+              case: { $eq: ["$level", level] },
+              then: order,
+            })),
+            default: 4,
+          },
+        },
+      },
+    },
+    { $sort: { specificity: 1, name: 1, _id: 1 } },
+    {
+      $group: {
+        _id: "$canonicalKey",
+        name: { $first: "$name" },
+        specificity: { $first: "$specificity" },
+      },
+    },
+    { $sort: { specificity: 1, name: 1, _id: 1 } },
+    { $limit: limit },
+    { $project: { _id: 0, name: 1 } },
+  ]).then((suggestions) => suggestions.map(({ name }) => name));
+};
+
 export const listPublicExploreMapProperties = async () => {
   const properties = await Property.find({
     ...buildPublicPropertyFilter({}),
@@ -1409,8 +1488,6 @@ export const duplicateAdminProperty = async ({ actorUserId, propertyId }) => {
     handleDuplicateCodeError(error);
   }
 };
-
-
 
 
 

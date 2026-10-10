@@ -9,31 +9,45 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { LandzoFilterSelect } from "../components/LandzoFilterSelect";
+import { LandzoLocationAutocomplete } from "../components/LandzoLocationAutocomplete";
 import { getPublicHomepage } from "../../api/homepage.api";
 import { listPublicProperties } from "../../api/publicProperties.api";
 import { PublicCmsLink } from "../components/PublicCmsLink";
 import { PublicPropertyCard } from "../components/PublicPropertyCard";
+import { HomeExploreMapPreview } from "../components/HomeExploreMapPreview";
 
 const trustItems = [
   {
     id: "verified",
     icon: "/image1.webp",
     label: "Verified\nproperties",
+    title: "Verified Properties",
+    description:
+      "Clear deeds and title checks for every property.",
   },
   {
     id: "documents",
     icon: "/image2.webp",
     label: "Document\nSupport",
+    title: "Document Support",
+    description:
+      "Guidance through legal documents and verification.",
   },
   {
     id: "site-visit",
     icon: "/image3.webp",
     label: "Site Visit\nAssistance",
+    title: "Site Visit Assistance",
+    description:
+      "Personal support to explore properties on the ground.",
   },
   {
     id: "choice",
     icon: "/image4.webp",
     label: "Best\nChoise",
+    title: "Best Choice",
+    description:
+      "Local insight to help you make a confident decision.",
   },
 ];
 const purposeItems = [
@@ -62,6 +76,28 @@ const purposeItems = [
     icon: "farm",
   },
 ];
+const purposePresentation = {
+  "dream-home": {
+    description:
+      "Find the ideal residential land or property for your next home.",
+    action: "Explore homes",
+  },
+  business: {
+    description:
+      "Discover commercial spaces and land suited for business growth.",
+    action: "Explore spaces",
+  },
+  investment: {
+    description:
+      "Explore high-potential land and property investment opportunities.",
+    action: "Explore investments",
+  },
+  farm: {
+    description:
+      "Find agricultural land and spaces suited for cultivation and farming.",
+    action: "Explore lands",
+  },
+};
 const PurposeIcon = ({ type }) => {
   const paths = {
     home: [
@@ -291,48 +327,13 @@ const LeaseIcon = () => (
 
 const featuredPropertyParams = {
   featured: "true",
-  limit: 3,
+  limit: 100,
   page: 1,
   sort: "newest",
 };
 
 const hasText = (value) =>
   Boolean(value?.trim?.());
-
-const formatHeroPrice = (
-  property,
-) => {
-  const pricing =
-    property?.pricing;
-
-  if (!pricing) {
-    return "Price on request";
-  }
-
-  if (
-    pricing.priceVisible === false ||
-    pricing.priceOnRequest
-  ) {
-    return "Price on request";
-  }
-
-  if (
-    pricing.amount === null ||
-    pricing.amount === undefined
-  ) {
-    return "Price on request";
-  }
-
-  const currency =
-    pricing.currency || "LKR";
-
-  const amount =
-    Number(
-      pricing.amount,
-    ).toLocaleString();
-
-  return `${currency} ${amount}`;
-};
 
 const getHeroPropertyLocation = (
   property,
@@ -464,6 +465,19 @@ const updateHeroFilter = (field, value) => {
   const purposeTrackRef =
     useRef(null);
 
+  const featuredTrackRef =
+    useRef(null);
+
+  const [
+    isFeaturedAtStart,
+    setIsFeaturedAtStart,
+  ] = useState(true);
+
+  const [
+    isFeaturedAtEnd,
+    setIsFeaturedAtEnd,
+  ] = useState(false);
+
   const [
     purposeSlide,
     setPurposeSlide,
@@ -473,6 +487,114 @@ const updateHeroFilter = (field, value) => {
     isPurposePaused,
     setIsPurposePaused,
   ] = useState(false);
+
+  const trustSectionRef =
+    useRef(null);
+
+  useEffect(() => {
+    const section =
+      trustSectionRef.current;
+
+    if (!section) {
+      return undefined;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      section.classList.add("is-revealed");
+      return undefined;
+    }
+
+    const observer =
+      new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            section.classList.add("is-revealed");
+            observer.disconnect();
+          }
+        },
+        {
+          threshold: 0.18,
+        },
+      );
+
+    observer.observe(section);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const track =
+      featuredTrackRef.current;
+
+    if (
+      !track ||
+      pageState.featuredProperties.length <= 3
+    ) {
+      setIsFeaturedAtStart(true);
+      setIsFeaturedAtEnd(false);
+      return undefined;
+    }
+
+    const syncControls = () => {
+      setIsFeaturedAtStart(
+        track.scrollLeft <= 1,
+      );
+      setIsFeaturedAtEnd(
+        track.scrollLeft + track.clientWidth >=
+          track.scrollWidth - 1,
+      );
+    };
+
+    syncControls();
+    window.addEventListener(
+      "resize",
+      syncControls,
+    );
+
+    return () => {
+      window.removeEventListener(
+        "resize",
+        syncControls,
+      );
+    };
+  }, [pageState.featuredProperties.length]);
+
+  const scrollFeaturedTrack = (direction) => {
+    const track =
+      featuredTrackRef.current;
+    const firstCard =
+      track?.firstElementChild;
+
+    if (!track || !firstCard) {
+      return;
+    }
+
+    const cardWidth =
+      firstCard.getBoundingClientRect().width;
+    const gap =
+      Number.parseFloat(
+        window.getComputedStyle(track).columnGap,
+      ) || 0;
+
+    track.scrollBy({
+      left: direction * (cardWidth + gap),
+      behavior: "smooth",
+    });
+  };
+
+  const syncFeaturedControls = (event) => {
+    const track = event.currentTarget;
+
+    setIsFeaturedAtStart(
+      track.scrollLeft <= 1,
+    );
+    setIsFeaturedAtEnd(
+      track.scrollLeft + track.clientWidth >=
+        track.scrollWidth - 1,
+    );
+  };
 
   useEffect(() => {
     let isCurrent = true;
@@ -973,8 +1095,17 @@ const updateHeroFilter = (field, value) => {
 
      <section className="landzo-home-hero">
 
-  {/* Exact Figma hero artwork */}
-  <svg
+       {homepage.hero?.image?.url ? (
+         <img
+           alt=""
+           aria-hidden="true"
+           className="landzo-home-hero-desktop-image"
+           src={homepage.hero.image.url}
+         />
+       ) : null}
+
+       {/* Exact Figma hero artwork */}
+       <svg
     aria-hidden="true"
     className="landzo-home-hero-art"
     preserveAspectRatio="none"
@@ -1025,6 +1156,7 @@ const updateHeroFilter = (field, value) => {
     {/* Backend / CMS image */}
     {homepage.hero?.image?.url ? (
       <image
+        className="landzo-home-hero-art-image"
         clipPath="url(#landzoHeroClip)"
         height="1375"
         href={homepage.hero.image.url}
@@ -1155,14 +1287,10 @@ const updateHeroFilter = (field, value) => {
                 }
               </strong>
 
-              <span className="landzo-hero-property-price">
-                {formatHeroPrice(
-                  heroProperty,
-                )}
-              </span>
-
               <span className="landzo-hero-property-link">
-                View Property →
+                <span>View</span>
+                <span className="landzo-hero-property-link-full"> Property</span>
+                {" →"}
               </span>
             </Link>
           ) : null}
@@ -1239,18 +1367,7 @@ const updateHeroFilter = (field, value) => {
 
             <div className="landzo-home-search-fields">
 
-              <label>
-                <span>
-                  Location
-                </span>
-
-                <input
-                  autoComplete="off"
-                  name="location"
-                  placeholder="Select location"
-                  type="text"
-                />
-              </label>
+              <LandzoLocationAutocomplete />
               <LandzoFilterSelect
                 className="landzo-home-filter-select"
                 label="Property Type"
@@ -1296,6 +1413,10 @@ const updateHeroFilter = (field, value) => {
         <div className="public-container">
           <div className="public-section-heading-row">
             <div>
+              <span className="landzo-featured-eyebrow">
+                HANDPICKED SELECTION
+              </span>
+
               {hasText(
                 homepage
                   .featuredProperties
@@ -1325,33 +1446,86 @@ const updateHeroFilter = (field, value) => {
               ) : null}
             </div>
 
-           <Link
-  className="public-section-link landzo-featured-view-all"
-  to="/properties"
->
-  <span>View All</span>
+            <Link
+              className="public-section-link landzo-featured-view-all"
+              to="/properties"
+            >
+              <span>View All</span>
 
-  <span className="landzo-featured-view-all-icon">
-    <FeaturedArrowIcon />
-  </span>
-</Link>
+              <span className="landzo-featured-view-all-icon">
+                <FeaturedArrowIcon />
+              </span>
+            </Link>
           </div>
 
           {featuredProperties.length >
           0 ? (
-            <div className="public-featured-grid">
-              {featuredProperties.map(
-                (property) => (
-                  <PublicPropertyCard
-                    key={
-                      property.code
-                    }
-                    property={
-                      property
-                    }
-                  />
-                ),
-              )}
+            <div
+              className={[
+                "landzo-featured-carousel-shell",
+                featuredProperties.length > 3
+                  ? "has-carousel"
+                  : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
+              {featuredProperties.length > 3 ? (
+                <button
+                  aria-label="Previous featured property"
+                  className="landzo-featured-carousel-button landzo-featured-carousel-prev"
+                  disabled={isFeaturedAtStart}
+                  onClick={() => scrollFeaturedTrack(-1)}
+                  type="button"
+                >
+                  <FeaturedArrowIcon />
+                </button>
+              ) : null}
+
+              <div
+                className={[
+                  "public-featured-grid",
+                  featuredProperties.length === 2
+                    ? "has-two-cards"
+                    : "",
+                  featuredProperties.length > 3
+                    ? "has-carousel"
+                    : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                aria-label="Featured properties"
+                onScroll={syncFeaturedControls}
+                ref={featuredTrackRef}
+                role="region"
+                tabIndex={featuredProperties.length > 3 ? 0 : undefined}
+              >
+                {featuredProperties.map(
+                  (property) => (
+                    <PublicPropertyCard
+                      key={
+                        property.code
+                      }
+                      property={
+                        property
+                      }
+                      variant="featured"
+                    />
+                  ),
+                )}
+              </div>
+
+              {featuredProperties.length > 3 ? (
+                <button
+                  aria-label="Next featured property"
+                  className="landzo-featured-carousel-button landzo-featured-carousel-next"
+                  disabled={isFeaturedAtEnd}
+                  onClick={() => scrollFeaturedTrack(1)}
+                  type="button"
+                >
+                  <FeaturedArrowIcon />
+                </button>
+              ) : null}
             </div>
           ) : (
             <div className="public-empty-state">
@@ -1370,7 +1544,44 @@ const updateHeroFilter = (field, value) => {
     EXPLORE ON MAP
     ===================================================== */}
 <section className="landzo-home-location-section">
-  <div className="landzo-home-location-inner">
+  <div className="landzo-home-location-inner landzo-home-location-shell">
+    <div className="landzo-home-location-heading-row">
+      <div className="landzo-home-location-heading-copy">
+        <span className="landzo-home-location-eyebrow">
+          MAP DISCOVERY
+        </span>
+
+        <h2>
+          Explore Properties on Map
+        </h2>
+
+        <p>
+          See properties around your preferred areas and explore available listings directly on the map.
+        </p>
+      </div>
+    </div>
+
+    <div className="landzo-home-location-map-stage">
+      <HomeExploreMapPreview />
+
+      <div className="landzo-home-map-status">
+        <span aria-hidden="true" />
+        SHOWING: AVAILABLE PROPERTIES
+      </div>
+
+      <Link
+        className="landzo-home-map-open-link"
+        to="/explore"
+      >
+        Open Full Map
+        <OpenMapIcon />
+      </Link>
+
+      <div className="landzo-home-map-caption">
+        <span>Property locations from current LANDZO listings</span>
+        <span>Click a marker to view property details</span>
+      </div>
+    </div>
 
     <div className="landzo-home-location-copy">
       <h2>
@@ -1394,14 +1605,12 @@ const updateHeroFilter = (field, value) => {
       </Link>
     </div>
 
-
-   <div
-  aria-hidden="true"
-  className="landzo-home-location-art"
->
-  <LocationMapArtwork />
-</div>
-
+    <div
+      aria-hidden="true"
+      className="landzo-home-location-art"
+    >
+      <LocationMapArtwork />
+    </div>
   </div>
 </section>
 
@@ -1412,6 +1621,10 @@ const updateHeroFilter = (field, value) => {
 
 <section className="landzo-purpose-section">
   <div className="landzo-purpose-inner">
+
+    <p className="landzo-purpose-eyebrow">
+      Tailored Categories
+    </p>
 
     <div className="landzo-purpose-heading-row">
       <h2>
@@ -1494,7 +1707,11 @@ const updateHeroFilter = (field, value) => {
 ].map(
   (item, index) => (
     <Link
-      className="landzo-purpose-card"
+      className={`landzo-purpose-card${
+        index % purposeItems.length === purposeSlide
+          ? " is-active"
+          : ""
+      }`}
       key={`${item.id}-${index}`}
       to={item.to}
     >
@@ -1506,6 +1723,15 @@ const updateHeroFilter = (field, value) => {
 
       <span className="landzo-purpose-card-title">
         {item.title}
+      </span>
+
+      <span className="landzo-purpose-card-description">
+        {purposePresentation[item.id].description}
+      </span>
+
+      <span className="landzo-purpose-card-cta">
+        {purposePresentation[item.id].action}
+        <span aria-hidden="true">→</span>
       </span>
     </Link>
   ),
@@ -1574,11 +1800,51 @@ const updateHeroFilter = (field, value) => {
     VERIFIED / TRANSPARENT / RELIABLE
     ===================================================== */}
 
-<section className="landzo-trust-section">
-  <div className="landzo-trust-card">
+<section
+  className="landzo-trust-section"
+  ref={trustSectionRef}
+>
+  <div className="landzo-trust-card landzo-trust-desktop-layout">
+    <div className="landzo-trust-content">
+      <p className="landzo-trust-eyebrow">
+        The Landzo Guarantee
+      </p>
 
-    {/* EXACT FIGMA BACKGROUND */}
+      <h2 className="landzo-trust-heading">
+        <span>Verified.</span>
+        <span>Transparent.</span>
+        <span>Reliable.</span>
+      </h2>
 
+      <p className="landzo-trust-description">
+        Every single property listed on Landzo undergoes rigorous title checks, legal clearances, and on-ground valuations by certified Sri Lankan surveyors to ensure absolute peace of mind.
+      </p>
+
+    </div>
+
+    <div className="landzo-trust-grid">
+      {trustItems.map(
+        (item) => (
+          <article
+            className="landzo-trust-feature-card"
+            key={item.id}
+          >
+            <div className="landzo-trust-feature-icon">
+              <img
+                alt=""
+                src={item.icon}
+              />
+            </div>
+
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </article>
+        ),
+      )}
+    </div>
+  </div>
+
+  <div className="landzo-trust-card landzo-trust-mobile-layout">
     <img
       aria-hidden="true"
       alt=""
@@ -1586,25 +1852,18 @@ const updateHeroFilter = (field, value) => {
       src="/verified-trust-bg.svg"
     />
 
-
-    {/* CONTENT */}
-
     <div className="landzo-trust-content">
-
       <h2 className="landzo-trust-heading">
         Verified. Transparent. Reliable.
       </h2>
 
-
       <div className="landzo-trust-items">
-
         {trustItems.map(
           (item) => (
             <div
               className="landzo-trust-item"
               key={item.id}
             >
-
               <div className="landzo-trust-icon-shell">
                 <img
                   alt=""
@@ -1613,17 +1872,13 @@ const updateHeroFilter = (field, value) => {
                 />
               </div>
 
-
               <span className="landzo-trust-label">
                 {item.label}
               </span>
-
             </div>
           ),
         )}
-
       </div>
-
     </div>
   </div>
 </section>
@@ -1637,10 +1892,13 @@ const updateHeroFilter = (field, value) => {
   <div className="landzo-list-property-card">
 
     <div className="landzo-list-property-copy">
+      <p className="landzo-list-property-eyebrow">
+        Property Owners &amp; Agents
+      </p>
 
       <h2>
         Have Land to
-        <br />
+        <br className="landzo-list-property-heading-break" />
         Sell, Rent or Lease?
       </h2>
 

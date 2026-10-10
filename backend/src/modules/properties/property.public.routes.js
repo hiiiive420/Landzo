@@ -5,11 +5,13 @@ import { validateRequest } from "../../common/validation/validateRequest.js";
 import {
   getPublicPropertyHandler,
   listPublicExploreMapPropertiesHandler,
+  listPublicPropertyLocationSuggestionsHandler,
   listPublicPropertiesHandler,
 } from "./property.controller.js";
 import {
   getPublicPropertySchema,
   listPublicExploreMapPropertiesSchema,
+  publicPropertyLocationSuggestionsSchema,
   listPublicPropertiesSchema,
 } from "./property.validator.js";
 
@@ -20,6 +22,12 @@ export const createPublicPropertyRouter = () => {
     "/",
     validateRequest(listPublicPropertiesSchema),
     listPublicPropertiesHandler,
+  );
+
+  router.get(
+    "/location-suggestions",
+    validateRequest(publicPropertyLocationSuggestionsSchema),
+    listPublicPropertyLocationSuggestionsHandler,
   );
 
   router.get(

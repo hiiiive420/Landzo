@@ -4,10 +4,12 @@ import {
   useRef,
   useState,
 } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   listPublicExploreMapProperties,
 } from "../../api/publicProperties.api";
+import { getPublicApiErrorMessage } from "../../api/publicApiClient";
 
 
 const LEAFLET_CSS_URL =
@@ -137,41 +139,28 @@ const loadLeaflet = () => {
 
 const createHomeMarkerIcon = (
   leaflet,
-  isPrimary = false,
 ) =>
   leaflet.divIcon({
-    className: [
-      "landzo-home-map-marker",
-      isPrimary
-        ? "is-primary"
-        : "",
-    ]
-      .filter(Boolean)
-      .join(" "),
-
-    html: `
-      <span class="landzo-home-map-marker-pin">
-        <span class="landzo-home-map-marker-dot"></span>
-      </span>
-    `,
-
-    iconAnchor: isPrimary
-      ? [18, 45]
-      : [13, 34],
-
-    iconSize: isPrimary
-      ? [36, 46]
-      : [26, 35],
+    className: "public-explore-marker",
+    html: "<span></span>",
+    iconAnchor: [14, 28],
+    iconSize: [28, 28],
   });
 
 
-  export const HomeExploreMapPreview =
+const HomeExploreMapPreviewContent =
   () => {
-    const containerRef =
+      const navigate =
+        useNavigate();
+
+      const containerRef =
       useRef(null);
 
-    const mapRef =
-      useRef(null);
+      const frameRef =
+        useRef(null);
+
+      const mapRef =
+        useRef(null);
 
     const markerLayerRef =
       useRef(null);
@@ -183,6 +172,26 @@ const createHomeMarkerIcon = (
       properties,
       setProperties,
     ] = useState([]);
+
+    const [
+      isPropertiesLoading,
+      setIsPropertiesLoading,
+    ] = useState(true);
+
+    const [
+      propertiesError,
+      setPropertiesError,
+    ] = useState("");
+
+    const [
+      mapError,
+      setMapError,
+    ] = useState("");
+
+    const [
+      isMapReady,
+      setIsMapReady,
+    ] = useState(false);
 
     const validProperties =
       useMemo(
@@ -212,14 +221,20 @@ const createHomeMarkerIcon = (
 
             if (!ignore) {
               setProperties(
-                result,
+                Array.isArray(result)
+                  ? result
+                  : [],
               );
             }
-          } catch {
+          } catch (error) {
             if (!ignore) {
-              setProperties(
-                [],
+              setPropertiesError(
+                getPublicApiErrorMessage(error),
               );
+            }
+          } finally {
+            if (!ignore) {
+              setIsPropertiesLoading(false);
             }
           }
         };
@@ -258,27 +273,9 @@ const createHomeMarkerIcon = (
                 containerRef.current,
                 {
                   attributionControl:
-                    false,
-
-                  zoomControl:
-                    false,
-
-                  dragging:
-                    false,
-
-                  touchZoom:
-                    false,
-
-                  doubleClickZoom:
-                    false,
+                    true,
 
                   scrollWheelZoom:
-                    false,
-
-                  boxZoom:
-                    false,
-
-                  keyboard:
                     false,
                 },
               )
@@ -295,6 +292,8 @@ const createHomeMarkerIcon = (
             .tileLayer(
               "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
               {
+                attribution:
+                  "&copy; OpenStreetMap contributors",
                 maxZoom: 19,
               },
             )
@@ -308,6 +307,16 @@ const createHomeMarkerIcon = (
 
           mapRef.current =
             map;
+          setIsMapReady(true);
+        })
+        .catch((error) => {
+          if (!cancelled) {
+            setMapError(
+              error instanceof Error
+                ? error.message
+                : "Map temporarily unavailable",
+            );
+          }
         });
 
       return () => {
@@ -324,9 +333,74 @@ const createHomeMarkerIcon = (
       };
     }, []);
 
+    useEffect(() => {
+      const map =
+        mapRef.current;
+
+      const container =
+        containerRef.current;
+
+      const frame =
+        frameRef.current;
+
+      if (
+        !isMapReady ||
+        !map ||
+        !container ||
+        !frame
+      ) {
+        return undefined;
+      }
+
+      let frameId = 0;
+
+      const invalidateMapSize = () => {
+        window.cancelAnimationFrame(
+          frameId,
+        );
+
+        frameId =
+          window.requestAnimationFrame(
+            () => {
+              map.invalidateSize({
+                pan: false,
+              });
+            },
+          );
+      };
+
+      invalidateMapSize();
+
+      const resizeObserver =
+        typeof ResizeObserver === "undefined"
+          ? null
+          : new ResizeObserver(
+              invalidateMapSize,
+            );
+
+      resizeObserver?.observe(frame);
+      resizeObserver?.observe(container);
+
+      window.addEventListener(
+        "resize",
+        invalidateMapSize,
+      );
+
+      return () => {
+        resizeObserver?.disconnect();
+        window.removeEventListener(
+          "resize",
+          invalidateMapSize,
+        );
+        window.cancelAnimationFrame(
+          frameId,
+        );
+      };
+    }, [isMapReady]);
+
 
     /* -----------------------------------------
-       Render dynamic ADMIN markers
+       Render public property markers
        ----------------------------------------- */
 
     useEffect(() => {
@@ -342,7 +416,8 @@ const createHomeMarkerIcon = (
       if (
         !leaflet ||
         !map ||
-        !markerLayer
+        !markerLayer ||
+        !isMapReady
       ) {
         return;
       }
@@ -353,11 +428,9 @@ const createHomeMarkerIcon = (
 
 
       validProperties
-        .slice(0, 5)
         .forEach(
           (
             property,
-            index,
           ) => {
             const latlng = [
               property.map.lat,
@@ -369,14 +442,14 @@ const createHomeMarkerIcon = (
             );
 
 
-            leaflet
+            const marker =
+              leaflet
               .marker(
                 latlng,
                 {
                   icon:
                     createHomeMarkerIcon(
                       leaflet,
-                      index === 2,
                     ),
 
                   title:
@@ -386,6 +459,17 @@ const createHomeMarkerIcon = (
               .addTo(
                 markerLayer,
               );
+
+            marker.on(
+              "click",
+              () => {
+                if (property.code) {
+                  navigate(
+                    `/properties/${encodeURIComponent(property.code)}`,
+                  );
+                }
+              },
+            );
           },
         );
 
@@ -395,11 +479,11 @@ const createHomeMarkerIcon = (
           bounds,
           {
             padding: [
-              22,
-              22,
+              45,
+              45,
             ],
 
-            maxZoom: 13,
+            maxZoom: 8,
           },
         );
       } else if (
@@ -407,18 +491,90 @@ const createHomeMarkerIcon = (
       ) {
         map.setView(
           bounds[0],
-          13,
+          8,
+        );
+      } else {
+        map.setView(
+          [
+            SRI_LANKA_CENTER.lat,
+            SRI_LANKA_CENTER.lng,
+          ],
+          SRI_LANKA_ZOOM,
         );
       }
-    }, [validProperties]);
+    }, [isMapReady, navigate, validProperties]);
 
 
     return (
-      <div className="landzo-home-map-frame">
+      <div
+        className="landzo-home-map-frame"
+        ref={frameRef}
+      >
         <div
           className="landzo-home-map"
           ref={containerRef}
         />
+        {mapError ? (
+          <div
+            className="landzo-home-map-message is-error"
+            role="status"
+          >
+            Map temporarily unavailable
+          </div>
+        ) : isPropertiesLoading ? (
+          <div
+            className="landzo-home-map-message"
+            role="status"
+          >
+            Loading property locations…
+          </div>
+        ) : propertiesError ? (
+          <div
+            className="landzo-home-map-message is-data-error"
+            role="status"
+          >
+            Property locations are temporarily unavailable
+          </div>
+        ) : null}
       </div>
     );
+  };
+
+export const HomeExploreMapPreview =
+  () => {
+    const [
+      isDesktop,
+      setIsDesktop,
+    ] = useState(false);
+
+    useEffect(() => {
+      const desktopQuery =
+        window.matchMedia(
+          "(min-width: 1025px)",
+        );
+
+      const updateDesktopState =
+        () => {
+          setIsDesktop(
+            desktopQuery.matches,
+          );
+        };
+
+      updateDesktopState();
+      desktopQuery.addEventListener(
+        "change",
+        updateDesktopState,
+      );
+
+      return () => {
+        desktopQuery.removeEventListener(
+          "change",
+          updateDesktopState,
+        );
+      };
+    }, []);
+
+    return isDesktop
+      ? <HomeExploreMapPreviewContent />
+      : null;
   };
