@@ -294,13 +294,13 @@ const useSimpleMobileNavbar =
     <HeartIcon />
   </NavLink>
 
-  <NavLink
+  <a
     aria-label="Contact LANDZO"
     className="landzo-mobile-action"
-    to="/contact"
+    href="tel:+94773059108"
   >
     <PhoneIcon />
-  </NavLink>
+  </a>
 </div>
 
           {/* DESKTOP LINKS */}
@@ -310,34 +310,35 @@ const useSimpleMobileNavbar =
               (item) => item.label !== "About",
             ).map(
               (item) => (
-                <NavLink
-                  className={({
-                    isActive,
-                  }) =>
-                    [
-                      "public-nav-link",
-                      "landzo-nav-link",
-                      isActive
-                        ? "is-active"
-                        : "",
-                    ]
-                      .filter(Boolean)
-                      .join(" ")
-                  }
-                  end={item.end}
-                  key={item.to}
-                  to={item.to}
-                >
-                  <NavIcon
-                    type={
-                      item.icon
+                item.icon === "contact" ? (
+                  <a
+                    aria-label="Call LANDZO"
+                    className="public-nav-link landzo-nav-link"
+                    href="tel:+94773059108"
+                    key={item.to}
+                  >
+                    <NavIcon type={item.icon} />
+                    <span>{item.label}</span>
+                  </a>
+                ) : (
+                  <NavLink
+                    className={({ isActive }) =>
+                      [
+                        "public-nav-link",
+                        "landzo-nav-link",
+                        isActive ? "is-active" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")
                     }
-                  />
-
-                  <span>
-                    {item.label}
-                  </span>
-                </NavLink>
+                    end={item.end}
+                    key={item.to}
+                    to={item.to}
+                  >
+                    <NavIcon type={item.icon} />
+                    <span>{item.label}</span>
+                  </NavLink>
+                )
               ),
             )}
           </div>

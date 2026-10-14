@@ -40708,6 +40708,42 @@ body:has(.landzo-public-blog-page) .public-main {
   margin-top: 18px;
 }
 
+.landzo-about-mission-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 18px;
+  margin-top: 30px;
+}
+
+.landzo-about-page .landzo-about-mission-card {
+  min-height: 0;
+  padding: 30px;
+}
+
+.landzo-about-page .landzo-about-mission-card > .landzo-static-eyebrow {
+  margin: 0 0 12px;
+  color: #8c7334;
+  font-size: 0.72rem;
+}
+
+.landzo-about-page .landzo-about-mission-card h2 {
+  margin: 0;
+  color: #173126;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.8rem, 2.4vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.landzo-about-page .landzo-about-mission-card > p:not(.landzo-static-eyebrow) {
+  margin-top: 14px;
+  color: #526359;
+  font-family: "Manrope", sans-serif;
+  font-size: 0.94rem;
+  line-height: 1.7;
+}
+
 .landzo-about-capabilities {
   padding: 98px 0 106px;
   background: #eee8df;
@@ -40773,6 +40809,28 @@ body:has(.landzo-public-blog-page) .public-main {
   line-height: 1.65;
 }
 
+.landzo-about-values {
+  padding: 98px 0 106px;
+  background: #f3ebe4;
+}
+
+.landzo-about-page .landzo-about-values-heading {
+  max-width: 680px;
+  margin: 0;
+  color: #173126;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2.8rem, 4.2vw, 4.5rem);
+  font-weight: 600;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.landzo-about-page .landzo-about-values-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 42px;
+}
+
 .landzo-about-statement {
   padding: 92px 0;
   background: #173126;
@@ -40819,6 +40877,10 @@ body:has(.landzo-public-blog-page) .public-main {
   font-family: "Manrope", sans-serif;
   font-size: 1.05rem;
   line-height: 1.75;
+}
+
+.landzo-about-statement-copy p + p {
+  margin-top: 16px;
 }
 
 .landzo-about-cta {
@@ -40909,8 +40971,23 @@ body:has(.landzo-public-blog-page) .public-main {
     margin-top: 32px;
   }
 
+  .landzo-about-page .landzo-about-mission-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .landzo-about-page .landzo-about-values-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 32px;
+  }
+
   .landzo-about-page .landzo-about-card {
     min-height: 190px;
+  }
+
+  .landzo-about-page .landzo-about-mission-card {
+    min-height: 0;
   }
 }
 
@@ -40932,6 +41009,10 @@ body:has(.landzo-public-blog-page) .public-main {
   .landzo-about-statement-grid {
     grid-template-columns: 1fr;
     gap: 28px;
+  }
+
+  .landzo-about-page .landzo-about-mission-card {
+    padding: 26px;
   }
 }
 
@@ -40997,6 +41078,18 @@ body:has(.landzo-public-blog-page) .public-main {
   }
 
   .landzo-about-page .landzo-about-card-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 26px;
+  }
+
+  .landzo-about-page .landzo-about-mission-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 22px;
+  }
+
+  .landzo-about-page .landzo-about-values-grid {
     grid-template-columns: 1fr;
     gap: 12px;
     margin-top: 26px;

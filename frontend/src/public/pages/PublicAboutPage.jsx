@@ -4,23 +4,46 @@ import aboutHeroImage from "../../utils/Golden Valley Sunset Lot.webp";
 const capabilities = [
   {
     icon: "property",
-    title: "Explore properties",
-    copy: "Browse land, homes, apartments and commercial listings in one place.",
+    title: "Explore Properties",
+    copy: "Browse land, houses, apartments and commercial property listings in one place and discover opportunities that match what you are looking for.",
   },
   {
     icon: "map",
-    title: "Discover by map",
-    copy: "Explore available properties geographically and get a feel for their location.",
+    title: "Discover by Map",
+    copy: "Explore available properties geographically and better understand their location, surroundings and wider area.",
   },
   {
     icon: "saved",
-    title: "Save for later",
-    copy: "Keep properties that interest you easy to revisit as you explore.",
+    title: "Save for Later",
+    copy: "Save properties that interest you so they remain easy to revisit, compare and consider as your search develops.",
   },
   {
     icon: "details",
-    title: "Understand the details",
-    copy: "Review clear property information to help guide your next step.",
+    title: "Understand the Details",
+    copy: "Review clear property information, location context and listing details to help guide your next step with greater confidence.",
+  },
+];
+
+const coreValues = [
+  {
+    icon: "details",
+    title: "Trust & Transparency",
+    copy: "We believe better property decisions begin with clear information and honest communication. LANDZO works to create reliable connections between buyers, sellers, property owners and investors.",
+  },
+  {
+    icon: "map",
+    title: "Innovation",
+    copy: "We use technology, map-based property discovery and modern digital experiences to make searching for real estate simpler, faster and more useful.",
+  },
+  {
+    icon: "saved",
+    title: "Customer Commitment",
+    copy: "The needs of property buyers, sellers and investors remain at the centre of the LANDZO experience. Every feature should make the property journey easier to understand and navigate.",
+  },
+  {
+    icon: "property",
+    title: "Growth & Opportunity",
+    copy: "Property can represent a home, a business, an investment or a long-term opportunity. We help people discover meaningful real estate opportunities and make informed decisions for their future.",
   },
 ];
 
@@ -79,8 +102,10 @@ export const PublicAboutPage = () => (
           <p className="landzo-static-eyebrow">ABOUT LANDZO</p>
           <h1>Finding property should feel clear, confident and connected.</h1>
           <p>
-            LANDZO is a Sri Lankan property discovery platform built to make exploring land,
-            homes, apartments and commercial properties simpler.
+            LANDZO is a Sri Lankan property discovery platform designed to make finding land,
+            houses, apartments and commercial properties simpler. We bring property listings,
+            location context and modern digital tools together to help buyers, sellers and
+            investors explore real estate opportunities across Sri Lanka with greater clarity.
           </p>
         </div>
         <figure className="landzo-about-hero-image">
@@ -98,14 +123,57 @@ export const PublicAboutPage = () => (
         </div>
         <div className="landzo-about-purpose-copy">
           <p>
-            Finding the right property starts with knowing what is available and where it is.
-            LANDZO brings land, homes, apartments and commercial listings together for easier
-            discovery.
+            Finding the right property starts with understanding what is available, where it is
+            located and whether it suits your needs.
           </p>
           <p>
-            Map-led exploration and clearer property information help connect people looking
-            for a place with the listings they want to explore.
+            LANDZO brings land, houses, apartments and commercial property listings together in
+            one place, making property discovery across Sri Lanka easier and more accessible.
           </p>
+          <p>
+            With map-led exploration, useful property information and a simple digital
+            experience, we help connect people searching for property with opportunities worth
+            exploring.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section className="landzo-static-section landzo-static-section-muted landzo-about-mission-vision">
+      <div className="landzo-static-shell">
+        <p className="landzo-static-eyebrow">OUR MISSION + OUR VISION</p>
+        <div className="landzo-static-card-grid landzo-about-mission-grid">
+          <article className="landzo-static-card landzo-about-card landzo-about-mission-card">
+            <span className="landzo-about-card-icon">
+              <CapabilityIcon name="property" />
+            </span>
+            <p className="landzo-static-eyebrow">OUR MISSION</p>
+            <h2>Making every property journey simpler.</h2>
+            <p>
+              To simplify the property journey by connecting people with the right real estate
+              opportunities through a transparent, reliable and technology-driven platform.
+            </p>
+            <p>
+              LANDZO aims to empower property buyers, sellers and investors with accessible
+              information, trusted connections and a seamless way to discover and explore real
+              estate opportunities across Sri Lanka.
+            </p>
+          </article>
+          <article className="landzo-static-card landzo-about-card landzo-about-mission-card">
+            <span className="landzo-about-card-icon">
+              <CapabilityIcon name="map" />
+            </span>
+            <p className="landzo-static-eyebrow">OUR VISION</p>
+            <h2>A more connected property market.</h2>
+            <p>
+              To become one of Sri Lanka’s most trusted and innovative real estate platforms,
+              transforming how people discover, experience and invest in property.
+            </p>
+            <p>
+              We envision a more transparent, accessible and connected real estate market where
+              technology helps people make better-informed property decisions.
+            </p>
+          </article>
         </div>
       </div>
     </section>
@@ -128,18 +196,43 @@ export const PublicAboutPage = () => (
       </div>
     </section>
 
+    <section className="landzo-static-section landzo-about-values">
+      <div className="landzo-static-shell">
+        <p className="landzo-static-eyebrow">OUR CORE VALUES</p>
+        <h2 className="landzo-about-values-heading">The principles<br />behind LANDZO.</h2>
+        <div className="landzo-static-card-grid landzo-about-values-grid">
+          {coreValues.map((value) => (
+            <article className="landzo-static-card landzo-about-card" key={value.title}>
+              <span className="landzo-about-card-icon">
+                <CapabilityIcon name={value.icon} />
+              </span>
+              <h3>{value.title}</h3>
+              <p>{value.copy}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
     <section className="landzo-static-section landzo-about-statement">
       <div className="landzo-static-shell landzo-about-statement-grid">
         <div>
-          <p className="landzo-about-statement-brand">LANDZO</p>
+          <p className="landzo-static-eyebrow">LANDZO</p>
           <h2>Your land.<br />Your future.</h2>
         </div>
         <div className="landzo-about-statement-copy">
           <span aria-hidden="true" />
-          <p>
-            We help people explore property opportunities with more clarity and confidence,
-            bringing useful listings and location context together in one place.
-          </p>
+          <div>
+            <p>
+              LANDZO helps people explore property opportunities across Sri Lanka with greater
+              clarity and confidence.
+            </p>
+            <p>
+              By bringing useful property listings, map-based discovery and location context
+              together in one platform, we are building a simpler way for buyers, sellers and
+              investors to connect with the real estate opportunities that matter to them.
+            </p>
+          </div>
         </div>
       </div>
     </section>
