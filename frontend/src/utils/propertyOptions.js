@@ -2,6 +2,7 @@ export const permissions = Object.freeze({
   propertyCreate: "property.create",
   propertyView: "property.view",
   propertyEdit: "property.edit",
+  propertyViewPrivateData: "property.viewPrivateData",
   propertyPublish: "property.publish",
   propertyArchive: "property.archive",
   propertyDelete: "property.delete",
@@ -112,6 +113,5 @@ export const commercialTypes = [
   { value: "mixed_use", label: "Mixed use" },
   { value: "other", label: "Other" },
 ];
-
 
 

@@ -338,6 +338,19 @@ export const PropertyEditPage = () => {
           <h1>{property?.title || "Property"}</h1>
         </div>
         <div className="form-actions">
+  <PermissionGate permission={permissions.propertyView}>
+    <PermissionGate permission={permissions.propertyEdit}>
+      <PermissionGate permission={permissions.propertyViewPrivateData}>
+    <button
+      className="button secondary"
+      type="button"
+      onClick={() => navigate(`/admin/properties/${propertyId}/listing-agreement`)}
+    >
+      Generate Listing Agreement
+    </button>
+      </PermissionGate>
+    </PermissionGate>
+  </PermissionGate>
   <PermissionGate permission={permissions.propertyCreate}>
     <button
       className="button secondary"

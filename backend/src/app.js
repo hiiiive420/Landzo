@@ -31,6 +31,7 @@ import { createPublicLocationRouter } from "./modules/locations/location.public.
 import { createMediaLibraryRouter } from "./modules/media-library/mediaLibrary.routes.js";
 import { createNotificationRouter } from "./modules/notifications/notification.routes.js";
 import { createPropertyRouter } from "./modules/properties/property.routes.js";
+import { createListingAgreementRouter } from "./modules/listing-agreements/listingAgreement.routes.js";
 import { createPrivateDocumentRouter } from "./modules/private-documents/privateDocument.routes.js";
 import { createPublicPropertyRouter } from "./modules/properties/property.public.routes.js";
 import { createRoleRouter } from "./modules/roles-permissions/role.routes.js";
@@ -44,7 +45,7 @@ import { healthRouter } from "./routes/health.routes.js";
 
 const defaultEnv = {
   NODE_ENV: process.env.NODE_ENV || "development",
-  CORS_ORIGINS: ["http://localhost:5173" || "https://landzo.hiiiive.lk"],
+  CORS_ORIGINS: ["http://localhost:5173", "https://landzo.hiiiive.lk"],
 };
 
 const createCorsOptions = (allowedOrigins) => ({
@@ -98,6 +99,7 @@ export const createApp = ({ env = defaultEnv, configureRoutes } = {}) => {
   app.use("/api/v1/admin/locations", createLocationRouter(env));
   app.use("/api/v1/admin/geocoding", createGeocodingRouter(env));
   app.use("/api/v1/admin/properties", createPropertyRouter(env));
+  app.use("/api/v1/admin/listing-agreements", createListingAgreementRouter(env));
   app.use("/api/v1/admin/media-library", createMediaLibraryRouter(env));
   app.use("/api/v1/admin/notifications", createNotificationRouter(env));
   app.use(
@@ -127,4 +129,3 @@ export const createApp = ({ env = defaultEnv, configureRoutes } = {}) => {
 
   return app;
 };
-

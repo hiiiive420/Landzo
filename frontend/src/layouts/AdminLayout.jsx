@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { getErrorMessage } from "../api/apiClient";
 import {
@@ -14,6 +14,7 @@ import { permissions } from "../utils/propertyOptions";
 
 export const AdminLayout = () => {
   const { user, logout, hasPermission } = useAuth();
+  const location = useLocation();
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -212,9 +213,26 @@ export const AdminLayout = () => {
             </div>
           </div>
 
+          <PermissionGate permission={permissions.propertyView}>
+            <PermissionGate permission={permissions.propertyEdit}>
+<PermissionGate permission={permissions.propertyViewPrivateData}>
+<NavLink
+  to="/admin/agreements"
+  className={({ isActive }) =>
+    isActive || /^\/admin\/properties\/[^/]+\/listing-agreement\/?$/.test(location.pathname)
+      ? "active"
+      : undefined
+  }
+>
+  Agreement
+</NavLink>
+</PermissionGate>
+            </PermissionGate>
+          </PermissionGate>
+
           <div className="nav-section">
             <p className="nav-section-label">
-              Operations
+Operations
             </p>
 
             <div className="nav-sublist">
@@ -482,5 +500,3 @@ export const AdminLayout = () => {
     </div>
   );
 };
-
-

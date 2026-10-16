@@ -27,6 +27,14 @@ import {
   setPropertyImageCoverHandler,
   uploadPropertyImagesHandler,
 } from "./propertyMedia.controller.js";
+import {
+  generateListingAgreementHandler,
+  getLatestListingAgreementHandler,
+} from "../listing-agreements/listingAgreement.controller.js";
+import {
+  generateListingAgreementSchema,
+  listingAgreementPropertyParamsSchema,
+} from "../listing-agreements/listingAgreement.validator.js";
 import { uploadPropertyImagesMiddleware } from "./propertyMedia.middleware.js";
 import {
   createAdminPropertySchema,
@@ -55,6 +63,11 @@ export const createPropertyRouter = (env) => {
   const requirePropertyCreate = requirePermissions(PERMISSIONS.PROPERTY_CREATE);
   const requirePropertyView = requirePermissions(PERMISSIONS.PROPERTY_VIEW);
   const requirePropertyEdit = requirePermissions(PERMISSIONS.PROPERTY_EDIT);
+  const requireListingAgreementAccess = requirePermissions(
+    PERMISSIONS.PROPERTY_VIEW,
+    PERMISSIONS.PROPERTY_EDIT,
+    PERMISSIONS.PROPERTY_VIEW_PRIVATE_DATA,
+  );
   const requirePropertyPublish = requirePermissions(PERMISSIONS.PROPERTY_PUBLISH);
   const requirePropertyArchive = requirePermissions(PERMISSIONS.PROPERTY_ARCHIVE);
   const requirePropertyDelete = requirePermissions(PERMISSIONS.PROPERTY_DELETE);
@@ -141,6 +154,18 @@ export const createPropertyRouter = (env) => {
     uploadPropertyImagesMiddleware,
     uploadPropertyImagesHandler(env),
   );
+  router.get(
+    "/:propertyId/listing-agreement",
+    requireListingAgreementAccess,
+    validateRequest(listingAgreementPropertyParamsSchema),
+    getLatestListingAgreementHandler,
+  );
+  router.post(
+    "/:propertyId/listing-agreement",
+    requireListingAgreementAccess,
+    validateRequest(generateListingAgreementSchema),
+    generateListingAgreementHandler,
+  );
   router.patch(
     "/:propertyId/media/reorder",
     requirePropertyEdit,
@@ -180,7 +205,4 @@ export const createPropertyRouter = (env) => {
 
   return router;
 };
-
-
-
 

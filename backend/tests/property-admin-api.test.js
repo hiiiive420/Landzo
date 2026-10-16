@@ -29,6 +29,10 @@ import {
 import { Property } from "../src/modules/properties/property.model.js";
 import { purgeExpiredTrashedProperties } from "../src/modules/properties/property.service.js";
 import { PropertyCodeCounter } from "../src/modules/properties/propertyCode.model.js";
+import {
+  ListingAgreement,
+  ListingAgreementCounter,
+} from "../src/modules/listing-agreements/listingAgreement.model.js";
 import { PERMISSIONS } from "../src/modules/roles-permissions/permission.constants.js";
 import { Role } from "../src/modules/roles-permissions/role.model.js";
 import { bootstrapSystemRoles } from "../src/modules/roles-permissions/role.service.js";
@@ -226,6 +230,8 @@ describe("admin property CRUD and draft management API", () => {
     await Location.init();
     await PropertyCodeCounter.init();
     await Property.init();
+    await ListingAgreement.init();
+    await ListingAgreementCounter.init();
   });
 
   beforeEach(async () => {
@@ -1597,6 +1603,146 @@ describe("admin property CRUD and draft management API", () => {
     );
     expect(nextProperty.code).not.toBe(expiredCode);
   });
+
+  it("generates a private two-party listing agreement for an existing property", async () => {
+    const owner = await createStaffUser({ email: "agreement-owner@example.com" });
+    const token = await loginAs(owner);
+    const property = await createPropertyViaApi(
+      token,
+      await fullPropertyInput({ title: "Agreement Test Land" }),
+    );
+    const endpoint = `/api/v1/admin/properties/${property.id}/listing-agreement`;
+
+    await request(app()).get(endpoint).expect(401);
+
+    const emptyAgreement = await request(app())
+      .get(endpoint)
+      .set(authHeader(token))
+      .expect(200);
+    expect(emptyAgreement.body.data).toBeNull();
+
+    const payload = {
+      judicialZone: "Colombo",
+      deedNumber: "D-100",
+      propertyInformation: "Agreement Test Land - Land",
+      propertyAddress: "No. 25, Galle Road, Colombo 03",
+      seller1: {
+        fullName: "Test Seller",
+        identificationNumber: "NIC-100",
+        address: "Colombo",
+        phone: "0112000000",
+        mobilePhone: "0773000000",
+      },
+      seller2: {
+        fullName: "",
+        identificationNumber: "",
+        address: "",
+        phone: "",
+        mobilePhone: "",
+      },
+      agreementDate: "2026-10-16",
+      commencementDate: "2026-10-16",
+      exclusivePeriodDays: 180,
+      protectionPeriodDays: 180,
+      minimumSellingPrice: 25000000,
+      currency: "LKR",
+      totalValuation: null,
+      commissionPercentage: 5,
+    };
+
+    const generated = await request(app())
+      .post(endpoint)
+      .set(authHeader(token))
+      .send(payload)
+      .expect(201);
+
+    expect(generated.body.data).toMatchObject({
+      propertyId: property.id,
+      propertyCode: property.code,
+      seller1: payload.seller1,
+      agreementDate: payload.agreementDate,
+      commencementDate: payload.commencementDate,
+      expiryDate: "2027-04-14",
+      exclusivePeriodDays: 180,
+      protectionPeriodDays: 180,
+      minimumSellingPrice: 25000000,
+      currency: "LKR",
+      commissionPercentage: 5,
+      status: "generated",
+    });
+    expect(generated.body.data.serialNumber).toMatch(/^LZO-AGR-2026-\d{6}$/);
+    await expect(ListingAgreement.countDocuments({ propertyId: property.id })).resolves.toBe(1);
+
+    const listed = await request(app())
+      .get("/api/v1/admin/listing-agreements")
+      .set(authHeader(token))
+      .query({ search: "NIC-100" })
+      .expect(200);
+    expect(listed.body.data).toHaveLength(0);
+
+    const matchingList = await request(app())
+      .get("/api/v1/admin/listing-agreements")
+      .set(authHeader(token))
+      .query({ search: "Test Seller", status: "generated" })
+      .expect(200);
+    expect(matchingList.body.data).toHaveLength(1);
+    expect(matchingList.body.data[0]).toMatchObject({
+      id: generated.body.data.id,
+      serialNumber: generated.body.data.serialNumber,
+      sellerName: "Test Seller",
+      status: "generated",
+    });
+    expect(JSON.stringify(matchingList.body.data)).not.toContain("NIC-100");
+    expect(JSON.stringify(matchingList.body.data)).not.toContain("D-100");
+
+    const exactAgreement = await request(app())
+      .get(
+        `/api/v1/admin/listing-agreements/${property.id}/${generated.body.data.id}`,
+      )
+      .set(authHeader(token))
+      .expect(200);
+    expect(exactAgreement.body.data).toMatchObject({
+      id: generated.body.data.id,
+      seller1: { identificationNumber: "NIC-100" },
+    });
+
+    const reloadedAgreement = await request(app())
+      .get(endpoint)
+      .set(authHeader(token))
+      .expect(200);
+    expect(reloadedAgreement.body.data.serialNumber).toBe(generated.body.data.serialNumber);
+
+    const propertyResponse = await request(app())
+      .get(`/api/v1/admin/properties/${property.id}`)
+      .set(authHeader(token))
+      .expect(200);
+    expect(propertyResponse.body.data).not.toHaveProperty("seller1");
+    expect(JSON.stringify(propertyResponse.body.data)).not.toContain("NIC-100");
+  });
+
+  it("requires private-data capability for listing agreement access", async () => {
+    const owner = await createStaffUser({ email: "agreement-owner@example.com" });
+    const limitedStaff = await createStaffUser({
+      email: "agreement-limited@example.com",
+      role: STAFF_ROLES.ADMIN,
+    });
+    const ownerToken = await loginAs(owner);
+    const limitedToken = await loginAs(limitedStaff);
+    const property = await createPropertyViaApi(ownerToken, minimalPropertyInput());
+    const adminRole = await Role.findOne({ key: STAFF_ROLES.ADMIN });
+    adminRole.permissions = [PERMISSIONS.PROPERTY_VIEW, PERMISSIONS.PROPERTY_EDIT];
+    await adminRole.save();
+
+    await request(app())
+      .get(`/api/v1/admin/properties/${property.id}/listing-agreement`)
+      .set(authHeader(limitedToken))
+      .expect(403);
+    await request(app())
+      .get("/api/v1/admin/listing-agreements")
+      .set(authHeader(limitedToken))
+      .expect(403);
+    await request(app())
+      .get("/api/v1/admin/listing-agreements")
+      .expect(401);
+  });
 });
-
-

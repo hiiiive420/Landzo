@@ -1,0 +1,43 @@
+export const serializeListingAgreement = (agreement) => ({
+  id: agreement._id.toString(),
+  serialNumber: agreement.serialNumber,
+  propertyId: agreement.propertyId.toString(),
+  propertyCode: agreement.propertyCode,
+  propertyType: agreement.propertyType,
+  judicialZone: agreement.judicialZone,
+  deedNumber: agreement.deedNumber,
+  propertyInformation: agreement.propertyInformation,
+  propertyAddress: agreement.propertyAddress,
+  seller1: agreement.seller1.toObject?.() ?? agreement.seller1,
+  seller2: agreement.seller2.toObject?.() ?? agreement.seller2,
+  agreementDate: agreement.agreementDate.toISOString().slice(0, 10),
+  commencementDate: agreement.commencementDate.toISOString().slice(0, 10),
+  expiryDate: agreement.expiryDate.toISOString().slice(0, 10),
+  exclusivePeriodDays: agreement.exclusivePeriodDays,
+  protectionPeriodDays: agreement.protectionPeriodDays,
+  minimumSellingPrice: agreement.minimumSellingPrice,
+  currency: agreement.currency,
+  totalValuation: agreement.totalValuation ?? null,
+  commissionPercentage: agreement.commissionPercentage,
+  status: agreement.status,
+  signedDocumentId: agreement.signedDocumentId?.toString?.() ?? null,
+  createdAt: agreement.createdAt?.toISOString?.() ?? null,
+  updatedAt: agreement.updatedAt?.toISOString?.() ?? null,
+});
+
+export const serializeListingAgreementListItem = (agreement) => ({
+  id: agreement._id.toString(),
+  serialNumber: agreement.serialNumber,
+  propertyId: agreement.propertyId.toString(),
+  propertyCode: agreement.propertyCode,
+  propertyType: agreement.propertyType,
+  propertyInformation: agreement.propertyInformation,
+  sellerName: [agreement.seller1.fullName, agreement.seller2?.fullName]
+    .filter(Boolean)
+    .join(" / "),
+  agreementDate: agreement.agreementDate.toISOString().slice(0, 10),
+  expiryDate: agreement.expiryDate.toISOString().slice(0, 10),
+  commissionPercentage: agreement.commissionPercentage,
+  status: agreement.status,
+  createdAt: agreement.createdAt?.toISOString?.() ?? null,
+});

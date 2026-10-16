@@ -295,7 +295,7 @@ const useSimpleMobileNavbar =
   </NavLink>
 
   <a
-    aria-label="Contact LANDZO"
+    aria-label="Call LANDZO"
     className="landzo-mobile-action"
     href="tel:+94773059108"
   >
@@ -310,35 +310,23 @@ const useSimpleMobileNavbar =
               (item) => item.label !== "About",
             ).map(
               (item) => (
-                item.icon === "contact" ? (
-                  <a
-                    aria-label="Call LANDZO"
-                    className="public-nav-link landzo-nav-link"
-                    href="tel:+94773059108"
-                    key={item.to}
-                  >
-                    <NavIcon type={item.icon} />
-                    <span>{item.label}</span>
-                  </a>
-                ) : (
-                  <NavLink
-                    className={({ isActive }) =>
-                      [
-                        "public-nav-link",
-                        "landzo-nav-link",
-                        isActive ? "is-active" : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" ")
-                    }
-                    end={item.end}
-                    key={item.to}
-                    to={item.to}
-                  >
-                    <NavIcon type={item.icon} />
-                    <span>{item.label}</span>
-                  </NavLink>
-                )
+                <NavLink
+                  className={({ isActive }) =>
+                    [
+                      "public-nav-link",
+                      "landzo-nav-link",
+                      isActive ? "is-active" : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")
+                  }
+                  end={item.end}
+                  key={item.to}
+                  to={item.to}
+                >
+                  <NavIcon type={item.icon} />
+                  <span>{item.label}</span>
+                </NavLink>
               ),
             )}
           </div>

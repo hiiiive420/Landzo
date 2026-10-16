@@ -29,6 +29,8 @@ import { ExploreMapPropertiesPage } from "./pages/admin/properties/ExploreMapPro
 import { FeaturedPropertiesPage } from "./pages/admin/properties/FeaturedPropertiesPage";
 import { PropertyCreatePage } from "./pages/admin/properties/PropertyCreatePage";
 import { PropertyEditPage } from "./pages/admin/properties/PropertyEditPage";
+import { ListingAgreementPage } from "./pages/admin/properties/ListingAgreementPage";
+import { AgreementListPage } from "./pages/admin/agreements/AgreementListPage";
 import { PropertyListPage } from "./pages/admin/properties/PropertyListPage";
 import { PublicContactPage } from "./public/pages/PublicContactPage";
 import { PublicBlogDetailPage } from "./public/pages/PublicBlogDetailPage";
@@ -119,6 +121,19 @@ export const App = () => (
         <Route path="account" element={<MyAccountPage />} />
 
         <Route
+          path="agreements"
+          element={
+            <RequirePermission permission={permissions.propertyView}>
+              <RequirePermission permission={permissions.propertyEdit}>
+                <RequirePermission permission={permissions.propertyViewPrivateData}>
+                  <AgreementListPage />
+                </RequirePermission>
+              </RequirePermission>
+            </RequirePermission>
+          }
+        />
+
+        <Route
           path="properties"
           element={
             <RequirePermission
@@ -179,6 +194,18 @@ export const App = () => (
               permission={permissions.propertyEdit}
             >
               <PropertyEditPage />
+            </RequirePermission>
+          }
+        />
+        <Route
+          path="properties/:propertyId/listing-agreement"
+          element={
+            <RequirePermission permission={permissions.propertyView}>
+              <RequirePermission permission={permissions.propertyEdit}>
+                <RequirePermission permission={permissions.propertyViewPrivateData}>
+                  <ListingAgreementPage />
+                </RequirePermission>
+              </RequirePermission>
             </RequirePermission>
           }
         />
@@ -462,8 +489,4 @@ export const App = () => (
 
   </Routes>
 );
-
-
-
-
 
